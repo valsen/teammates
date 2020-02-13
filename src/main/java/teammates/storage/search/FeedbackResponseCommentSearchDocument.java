@@ -25,6 +25,7 @@ import teammates.common.util.Assumption;
 import teammates.common.util.Const;
 import teammates.common.util.JsonUtils;
 import teammates.common.util.StringHelper;
+import diy.Diy;
 
 /**
  * The {@link SearchDocument} object that defines how we store {@link Document} for response comments.
@@ -50,6 +51,7 @@ public class FeedbackResponseCommentSearchDocument extends SearchDocument {
     @Override
     protected void prepareData() {
         if (comment == null) {
+            Diy.setReachedId("prepareData", 1);
             return;
         }
 
@@ -65,8 +67,10 @@ public class FeedbackResponseCommentSearchDocument extends SearchDocument {
         Set<String> addedEmailSet = new HashSet<>();
         if (relatedQuestion.giverType == FeedbackParticipantType.INSTRUCTORS
                 || relatedQuestion.giverType == FeedbackParticipantType.SELF) {
+            Diy.setReachedId("prepareData", 2);
             InstructorAttributes ins = instructorsDb.getInstructorForEmail(comment.courseId, relatedResponse.giver);
             if (ins == null || addedEmailSet.contains(ins.email)) {
+                Diy.setReachedId("prepareData", 3);
                 responseGiverName = Const.USER_UNKNOWN_TEXT;
             } else {
                 relatedInstructors.add(ins);
@@ -74,10 +78,12 @@ public class FeedbackResponseCommentSearchDocument extends SearchDocument {
                 responseGiverName = ins.name + " (" + ins.displayedName + ")";
             }
         } else if (relatedQuestion.giverType == FeedbackParticipantType.TEAMS) {
+            Diy.setReachedId("prepareData", 4);
             responseGiverName = relatedResponse.giver;
         } else {
             StudentAttributes stu = studentsDb.getStudentForEmail(comment.courseId, relatedResponse.giver);
             if (stu == null || addedEmailSet.contains(stu.email)) {
+                Diy.setReachedId("prepareData", 5);
                 responseGiverName = Const.USER_UNKNOWN_TEXT;
             } else {
                 relatedStudents.add(stu);
@@ -88,23 +94,29 @@ public class FeedbackResponseCommentSearchDocument extends SearchDocument {
 
         switch (relatedQuestion.recipientType) {
         case INSTRUCTORS:
+            Diy.setReachedId("prepareData", 6);
             InstructorAttributes ins = instructorsDb.getInstructorForEmail(comment.courseId, relatedResponse.recipient);
             if (ins != null && !addedEmailSet.contains(ins.email)) {
+                Diy.setReachedId("prepareData", 7);
                 relatedInstructors.add(ins);
                 addedEmailSet.add(ins.email);
                 responseRecipientName = ins.name + " (" + ins.displayedName + ")";
             }
             break;
         case SELF:
+            Diy.setReachedId("prepareData", 8);
             responseRecipientName = responseGiverName;
             break;
         case NONE:
+            Diy.setReachedId("prepareData", 9);
             responseRecipientName = Const.USER_NOBODY_TEXT;
             break;
         case TEAMS:
+            Diy.setReachedId("prepareData", 10);
             responseRecipientName = relatedResponse.recipient;
             break;
         default:
+            Diy.setReachedId("prepareData", 11);
             StudentAttributes stu = studentsDb.getStudentForEmail(comment.courseId, relatedResponse.recipient);
 
             if (stu != null && !addedEmailSet.contains(stu.email)) {
@@ -115,9 +127,11 @@ public class FeedbackResponseCommentSearchDocument extends SearchDocument {
 
             List<StudentAttributes> team = studentsDb.getStudentsForTeam(relatedResponse.recipient, comment.courseId);
             if (team != null) {
+                Diy.setReachedId("prepareData", 12);
                 responseRecipientName = relatedResponse.recipient; // it's actually a team name here
                 for (StudentAttributes studentInTeam : team) {
                     if (!addedEmailSet.contains(studentInTeam.email)) {
+                        Diy.setReachedId("prepareData", 13);
                         relatedStudents.add(studentInTeam);
                         addedEmailSet.add(studentInTeam.email);
                     }
@@ -125,6 +139,7 @@ public class FeedbackResponseCommentSearchDocument extends SearchDocument {
             }
 
             if (stu == null || team == null) {
+                Diy.setReachedId("prepareData", 14);
                 responseRecipientName = Const.USER_UNKNOWN_TEXT;
             }
             break;
