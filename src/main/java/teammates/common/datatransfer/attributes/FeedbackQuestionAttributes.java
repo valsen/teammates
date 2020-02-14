@@ -249,89 +249,148 @@ public class FeedbackQuestionAttributes extends EntityAttributes<FeedbackQuestio
 
     @Override
     public boolean equals(Object obj) {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        String method = stackTrace[1].getMethodName();
+
         if (this == obj) {
+            teammates.diy.diy.Diy.setReachedId(method, 1);
             return true;
+        } else {
+            teammates.diy.diy.Diy.setReachedId(method, 2);
         }
 
         if (obj == null) {
+            teammates.diy.diy.Diy.setReachedId(method, 3);
             return false;
+        } else {
+            teammates.diy.diy.Diy.setReachedId(method, 4);
         }
 
         if (getClass() != obj.getClass()) {
+            teammates.diy.diy.Diy.setReachedId(method, 5);
             return false;
+        } else {
+            teammates.diy.diy.Diy.setReachedId(method, 6);
         }
 
         FeedbackQuestionAttributes other = (FeedbackQuestionAttributes) obj;
 
         if (courseId == null) {
+            teammates.diy.diy.Diy.setReachedId(method, 7);
             if (other.courseId != null) {
+                teammates.diy.diy.Diy.setReachedId(method, 8);
                 return false;
+            } else {
+                teammates.diy.diy.Diy.setReachedId(method, 9);
             }
         } else if (!courseId.equals(other.courseId)) {
+            teammates.diy.diy.Diy.setReachedId(method, 10);
             return false;
         }
 
         if (feedbackSessionName == null) {
+            teammates.diy.diy.Diy.setReachedId(method, 11);
             if (other.feedbackSessionName != null) {
+                teammates.diy.diy.Diy.setReachedId(method, 12);
                 return false;
+            } else {
+                teammates.diy.diy.Diy.setReachedId(method, 13);
             }
         } else if (!feedbackSessionName.equals(other.feedbackSessionName)) {
+            teammates.diy.diy.Diy.setReachedId(method, 14);
             return false;
         }
 
         if (giverType != other.giverType) {
+            teammates.diy.diy.Diy.setReachedId(method, 15);
             return false;
+        } else {
+            teammates.diy.diy.Diy.setReachedId(method, 16);
         }
 
         if (numberOfEntitiesToGiveFeedbackTo != other.numberOfEntitiesToGiveFeedbackTo) {
+            teammates.diy.diy.Diy.setReachedId(method, 17);
             return false;
+        } else {
+            teammates.diy.diy.Diy.setReachedId(method, 18);
         }
 
         if (questionNumber != other.questionNumber) {
+            teammates.diy.diy.Diy.setReachedId(method, 19);
             return false;
+        } else {
+            teammates.diy.diy.Diy.setReachedId(method, 20);
         }
 
         if (questionDetails == null) {
+            teammates.diy.diy.Diy.setReachedId(method, 21);
             if (other.questionDetails != null) {
+                teammates.diy.diy.Diy.setReachedId(method, 22);
                 return false;
+            } else {
+                teammates.diy.diy.Diy.setReachedId(method, 23);
             }
         } else if (!questionDetails.equals(other.questionDetails)) {
+            teammates.diy.diy.Diy.setReachedId(method, 24);
             return false;
         }
 
         if (questionDescription == null) {
+            teammates.diy.diy.Diy.setReachedId(method, 25);
             if (other.questionDescription != null) {
+                teammates.diy.diy.Diy.setReachedId(method, 26);
                 return false;
+            } else {
+                teammates.diy.diy.Diy.setReachedId(method, 27);
             }
         } else if (!questionDescription.equals(other.questionDescription)) {
+            teammates.diy.diy.Diy.setReachedId(method, 28);
             return false;
         }
 
         if (recipientType != other.recipientType) {
+            teammates.diy.diy.Diy.setReachedId(method, 29);
             return false;
+        } else {
+            teammates.diy.diy.Diy.setReachedId(method, 30);
         }
 
         if (showGiverNameTo == null) {
+            teammates.diy.diy.Diy.setReachedId(method, 31);
             if (other.showGiverNameTo != null) {
+                teammates.diy.diy.Diy.setReachedId(method, 32);
                 return false;
+            } else {
+                teammates.diy.diy.Diy.setReachedId(method, 33);
             }
         } else if (!showGiverNameTo.equals(other.showGiverNameTo)) {
+            teammates.diy.diy.Diy.setReachedId(method, 34);
             return false;
         }
 
         if (showRecipientNameTo == null) {
+            teammates.diy.diy.Diy.setReachedId(method, 35);
             if (other.showRecipientNameTo != null) {
+                teammates.diy.diy.Diy.setReachedId(method, 36);
                 return false;
+            } else {
+                teammates.diy.diy.Diy.setReachedId(method, 37);
             }
         } else if (!showRecipientNameTo.equals(other.showRecipientNameTo)) {
+            teammates.diy.diy.Diy.setReachedId(method, 38);
             return false;
         }
 
         if (showResponsesTo == null) {
+            teammates.diy.diy.Diy.setReachedId(method, 39);
             if (other.showResponsesTo != null) {
+                teammates.diy.diy.Diy.setReachedId(method, 40);
                 return false;
+            } else {
+                teammates.diy.diy.Diy.setReachedId(method, 41);
             }
         } else if (!showResponsesTo.equals(other.showResponsesTo)) {
+            teammates.diy.diy.Diy.setReachedId(method, 42);
             return false;
         }
 
