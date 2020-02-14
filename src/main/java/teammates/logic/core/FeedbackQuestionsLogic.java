@@ -295,7 +295,6 @@ public final class FeedbackQuestionsLogic {
 
         Map<String, String> recipients = new HashMap<>();
         FeedbackParticipantType recipientType = question.recipientType;
-
         String giverTeam = getGiverTeam(giver, instructorGiver, studentGiver);
 
         switch (recipientType) {
