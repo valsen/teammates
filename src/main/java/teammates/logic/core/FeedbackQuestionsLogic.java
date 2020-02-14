@@ -294,7 +294,6 @@ public final class FeedbackQuestionsLogic {
             throws EntityDoesNotExistException {
 
         Map<String, String> recipients = new HashMap<>();
-
         FeedbackParticipantType recipientType = question.recipientType;
 
         String giverTeam = getGiverTeam(giver, instructorGiver, studentGiver);
