@@ -26,7 +26,7 @@ import teammates.common.util.Const;
 import teammates.common.util.Logger;
 import teammates.storage.api.FeedbackQuestionsDb;
 
-import diy.Diy;
+import teammates.diy.Diy;
 
 /**
  * Handles operations related to feedback questions.
@@ -292,7 +292,8 @@ public final class FeedbackQuestionsLogic {
             FeedbackQuestionAttributes question, String giver,
             InstructorAttributes instructorGiver, StudentAttributes studentGiver)
             throws EntityDoesNotExistException {
-
+        Diy diy = new Diy();
+        diy.initializeFile("getRecipientsForQuestion", 15);
         Map<String, String> recipients = new HashMap<>();
 
         FeedbackParticipantType recipientType = question.recipientType;
@@ -301,52 +302,65 @@ public final class FeedbackQuestionsLogic {
 
         switch (recipientType) {
         case SELF:
+            diy.setReachedId("getRecipientsForQuestion", 1);
             if (question.giverType == FeedbackParticipantType.TEAMS) {
+                diy.setReachedId("getRecipientsForQuestion", 2);
                 recipients.put(studentGiver.team, studentGiver.team);
             } else {
+                diy.setReachedId("getRecipientsForQuestion", 3);
                 recipients.put(giver, Const.USER_NAME_FOR_SELF);
             }
             break;
         case STUDENTS:
+            diy.setReachedId("getRecipientsForQuestion", 4);
             List<StudentAttributes> studentsInCourse = studentsLogic.getStudentsForCourse(question.courseId);
             for (StudentAttributes student : studentsInCourse) {
                 // Ensure student does not evaluate himself
                 if (!giver.equals(student.email)) {
+                    diy.setReachedId("getRecipientsForQuestion", 5);
                     recipients.put(student.email, student.name);
                 }
             }
             break;
         case INSTRUCTORS:
+            diy.setReachedId("getRecipientsForQuestion", 6);
             List<InstructorAttributes> instructorsInCourse = instructorsLogic.getInstructorsForCourse(question.courseId);
             for (InstructorAttributes instr : instructorsInCourse) {
                 // Ensure instructor does not evaluate himself
                 if (!giver.equals(instr.email)) {
+                    diy.setReachedId("getRecipientsForQuestion", 7);
                     recipients.put(instr.email, instr.name);
                 }
             }
             break;
         case TEAMS:
+            diy.setReachedId("getRecipientsForQuestion", 8);
             List<TeamDetailsBundle> teams = coursesLogic.getTeamsForCourse(question.courseId);
             for (TeamDetailsBundle team : teams) {
                 // Ensure student('s team) does not evaluate own team.
                 if (!giverTeam.equals(team.name)) {
+                    diy.setReachedId("getRecipientsForQuestion", 9);
                     // recipientEmail doubles as team name in this case.
                     recipients.put(team.name, team.name);
                 }
             }
             break;
         case OWN_TEAM:
+            diy.setReachedId("getRecipientsForQuestion", 10);
             recipients.put(giverTeam, giverTeam);
             break;
         case OWN_TEAM_MEMBERS:
+            diy.setReachedId("getRecipientsForQuestion", 11);
             List<StudentAttributes> students = studentsLogic.getStudentsForTeam(giverTeam, question.courseId);
             for (StudentAttributes student : students) {
                 if (!student.email.equals(giver)) {
+                    diy.setReachedId("getRecipientsForQuestion", 12);
                     recipients.put(student.email, student.name);
                 }
             }
             break;
         case OWN_TEAM_MEMBERS_INCLUDING_SELF:
+            diy.setReachedId("getRecipientsForQuestion", 13);
             List<StudentAttributes> teamMembers = studentsLogic.getStudentsForTeam(giverTeam, question.courseId);
             for (StudentAttributes student : teamMembers) {
                 // accepts self feedback too
@@ -354,9 +368,11 @@ public final class FeedbackQuestionsLogic {
             }
             break;
         case NONE:
+            diy.setReachedId("getRecipientsForQuestion", 14);
             recipients.put(Const.GENERAL_QUESTION, Const.GENERAL_QUESTION);
             break;
         default:
+            diy.setReachedId("getRecipientsForQuestion", 15);
             break;
         }
         return recipients;
@@ -434,34 +450,43 @@ public final class FeedbackQuestionsLogic {
         Map<String, String> recipients = new HashMap<>();
 
         FeedbackParticipantType recipientType = question.recipientType;
-
+        Diy diy = new Diy();
+        diy.initializeFile("getRecipientsOfQuestion", 15);
         switch (recipientType) {
         case SELF:
+            diy.setReachedId("getRecipientsOfQuestion", 1);
             if (question.giverType == FeedbackParticipantType.TEAMS) {
+                diy.setReachedId("getRecipientsOfQuestion", 2);
                 recipients.put(giverTeam, giverTeam);
             } else {
+                diy.setReachedId("getRecipientsOfQuestion", 3);
                 recipients.put(giverEmail, Const.USER_NAME_FOR_SELF);
             }
             break;
         case STUDENTS:
+            diy.setReachedId("getRecipientsOfQuestion", 4);
             List<StudentAttributes> studentsInCourse = studentsLogic.getStudentsForCourse(question.courseId);
             for (StudentAttributes student : studentsInCourse) {
                 // Ensure student does not evaluate himself
                 if (!giverEmail.equals(student.email)) {
+                    diy.setReachedId("getRecipientsOfQuestion", 5);
                     recipients.put(student.email, student.name);
                 }
             }
             break;
         case INSTRUCTORS:
+            diy.setReachedId("getRecipientsOfQuestion", 6);
             List<InstructorAttributes> instructorsInCourse = instructorsLogic.getInstructorsForCourse(question.courseId);
             for (InstructorAttributes instr : instructorsInCourse) {
                 // Ensure instructor does not evaluate himself
                 if (!giverEmail.equals(instr.email)) {
+                    diy.setReachedId("getRecipientsOfQuestion", 7);
                     recipients.put(instr.email, instr.name);
                 }
             }
             break;
         case TEAMS:
+            diy.setReachedId("getRecipientsOfQuestion", 8);
             List<TeamDetailsBundle> teams = null;
             try {
                 teams = coursesLogic.getTeamsForCourse(question.courseId);
@@ -471,23 +496,28 @@ public final class FeedbackQuestionsLogic {
             for (TeamDetailsBundle team : teams) {
                 // Ensure student('s team) does not evaluate own team.
                 if (!giverTeam.equals(team.name)) {
+                    diy.setReachedId("getRecipientsOfQuestion", 9);
                     // recipientEmail doubles as team name in this case.
                     recipients.put(team.name, team.name);
                 }
             }
             break;
         case OWN_TEAM:
+            diy.setReachedId("getRecipientsOfQuestion", 10);
             recipients.put(giverTeam, giverTeam);
             break;
         case OWN_TEAM_MEMBERS:
+            diy.setReachedId("getRecipientsOfQuestion", 11);
             List<StudentAttributes> students = studentsLogic.getStudentsForTeam(giverTeam, question.courseId);
             for (StudentAttributes student : students) {
                 if (!student.email.equals(giverEmail)) {
+                    diy.setReachedId("getRecipientsOfQuestion", 12);
                     recipients.put(student.email, student.name);
                 }
             }
             break;
         case OWN_TEAM_MEMBERS_INCLUDING_SELF:
+            diy.setReachedId("getRecipientsOfQuestion", 13);
             List<StudentAttributes> teamMembers = studentsLogic.getStudentsForTeam(giverTeam, question.courseId);
             for (StudentAttributes student : teamMembers) {
                 // accepts self feedback too
@@ -495,9 +525,11 @@ public final class FeedbackQuestionsLogic {
             }
             break;
         case NONE:
+            diy.setReachedId("getRecipientsOfQuestion", 14);
             recipients.put(Const.GENERAL_QUESTION, Const.GENERAL_QUESTION);
             break;
         default:
+            diy.setReachedId("getRecipientsOfQuestion", 15);
             break;
         }
         return recipients;
