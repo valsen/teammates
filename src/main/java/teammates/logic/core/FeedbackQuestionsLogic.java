@@ -457,6 +457,7 @@ public final class FeedbackQuestionsLogic {
         FeedbackParticipantType recipientType = question.recipientType;
         Diy diy = new Diy();
         diy.initializeFile("getRecipientsOfQuestion", 26);
+        
         switch (recipientType) {
         case SELF:
             diy.setReachedId("getRecipientsOfQuestion", 1);
