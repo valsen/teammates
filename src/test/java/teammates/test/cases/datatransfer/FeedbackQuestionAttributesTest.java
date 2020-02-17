@@ -856,4 +856,40 @@ public class FeedbackQuestionAttributesTest extends BaseAttributesTest {
         FeedbackQuestionAttributes fqa2 = fqa1.getCopy();
         assertEquals(fqa1, fqa2);
     }
+
+    @Test
+    public void testEqualsWithSameObjectShouldPass() {
+        FeedbackQuestionAttributes fqa1 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        assertEquals(fqa1, fqa1);
+    }
+
+    @Test
+    public void testEqualsWithDifferentClassShouldFail() {
+        FeedbackQuestionAttributes fqa1 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        assertEquals(fqa1, new Object());
+    }
 }
