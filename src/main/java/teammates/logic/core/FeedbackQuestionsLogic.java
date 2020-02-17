@@ -293,8 +293,8 @@ public final class FeedbackQuestionsLogic {
             InstructorAttributes instructorGiver, StudentAttributes studentGiver)
             throws EntityDoesNotExistException {
         Diy diy = new Diy();
+
         diy.initializeFile("getRecipientsForQuestion", 19);
-        Map<String, String> recipients = new HashMap<>();
 
         FeedbackParticipantType recipientType = question.recipientType;
 
@@ -324,22 +324,29 @@ public final class FeedbackQuestionsLogic {
             break;
         case INSTRUCTORS:
             diy.setReachedId("getRecipientsForQuestion", 7);
+
             List<InstructorAttributes> instructorsInCourse = instructorsLogic.getInstructorsForCourse(question.courseId);
             for (InstructorAttributes instr : instructorsInCourse) {
                 // Ensure instructor does not evaluate himself
                 if (!giver.equals(instr.email)) {
+
                     diy.setReachedId("getRecipientsForQuestion", 8);
+
                     recipients.put(instr.email, instr.name);
                 } else diy.setReachedId("getRecipientsForQuestion", 9);
             }
             break;
         case TEAMS:
+
             diy.setReachedId("getRecipientsForQuestion", 10);
+
             List<TeamDetailsBundle> teams = coursesLogic.getTeamsForCourse(question.courseId);
             for (TeamDetailsBundle team : teams) {
                 // Ensure student('s team) does not evaluate own team.
                 if (!giverTeam.equals(team.name)) {
+
                     diy.setReachedId("getRecipientsForQuestion", 11);
+
                     // recipientEmail doubles as team name in this case.
                     recipients.put(team.name, team.name);
                 } else diy.setReachedId("getRecipientsForQuestion", 12);
@@ -368,6 +375,7 @@ public final class FeedbackQuestionsLogic {
             }
             break;
         case NONE:
+
             diy.setReachedId("getRecipientsForQuestion", 18);
             recipients.put(Const.GENERAL_QUESTION, Const.GENERAL_QUESTION);
             break;
@@ -452,6 +460,7 @@ public final class FeedbackQuestionsLogic {
         FeedbackParticipantType recipientType = question.recipientType;
         Diy diy = new Diy();
         diy.initializeFile("getRecipientsOfQuestion", 19);
+
         switch (recipientType) {
         case SELF:
             diy.setReachedId("getRecipientsOfQuestion", 1);
@@ -486,6 +495,7 @@ public final class FeedbackQuestionsLogic {
             }
             break;
         case TEAMS:
+
             diy.setReachedId("getRecipientsOfQuestion", 10);
             List<TeamDetailsBundle> teams = null;
             try {
