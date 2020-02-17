@@ -7,7 +7,9 @@ public class Diy {
     String[] functionLists = new String[] {
             "getRecipientsOfQuestion.txt",
             "getRecipientsForQuestion.txt",
-            "isResponseVisibleForUser.txt"
+            "isResponseVisibleForUser.txt",
+            "validateQuestionDetails2",
+            "prepareData"
     };
 
     private void runTests(){

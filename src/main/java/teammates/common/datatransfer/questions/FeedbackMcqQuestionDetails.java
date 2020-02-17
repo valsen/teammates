@@ -21,7 +21,7 @@ import teammates.common.util.SanitizationHelper;
 import teammates.common.util.Templates;
 import teammates.common.util.Templates.FeedbackQuestion.FormTemplates;
 import teammates.common.util.Templates.FeedbackQuestion.Slots;
-import diy.Diy;
+import teammates.diy.Diy;
 
 public class FeedbackMcqQuestionDetails extends FeedbackQuestionDetails {
     private static final Logger log = Logger.getLogger();

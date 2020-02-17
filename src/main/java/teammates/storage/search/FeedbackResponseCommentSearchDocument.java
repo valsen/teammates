@@ -25,7 +25,7 @@ import teammates.common.util.Assumption;
 import teammates.common.util.Const;
 import teammates.common.util.JsonUtils;
 import teammates.common.util.StringHelper;
-import diy.Diy;
+import teammates.diy.Diy;
 
 /**
  * The {@link SearchDocument} object that defines how we store {@link Document} for response comments.
