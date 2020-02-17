@@ -8,8 +8,8 @@ public class Diy {
             "getRecipientsOfQuestion.txt",
             "getRecipientsForQuestion.txt",
             "isResponseVisibleForUser.txt",
-            "validateQuestionDetails2",
-            "prepareData"
+            "validateQuestionDetails2.txt",
+            "prepareData.txt"
     };
 
     private void runTests(){
