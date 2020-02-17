@@ -818,4 +818,42 @@ public class FeedbackQuestionAttributesTest extends BaseAttributesTest {
                     .build();
         });
     }
+
+    @Test
+    public void testEqualsWithNullObjectShouldFail() {
+        FeedbackQuestionAttributes fqa1 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        FeedbackQuestionAttributes fqa2 = null;
+        assertNotEquals(fqa1, fqa2);
+    }
+
+    @Test
+    public void testEqualsWithCopyShouldPass() {
+        FeedbackQuestionAttributes fqa1 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        FeedbackQuestionAttributes fqa2 = fqa1.getCopy();
+        assertEquals(fqa1, fqa2);
+    }
 }
