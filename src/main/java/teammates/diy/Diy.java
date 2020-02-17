@@ -8,6 +8,8 @@ public class Diy {
             "getRecipientsOfQuestion.txt",
             "getRecipientsForQuestion.txt",
             "isResponseVisibleForUser.txt",
+            "updateFeedbackSession.txt",
+            "getQuestionWithExistingResponseSubmissionFormHtml.txt",
             "validateQuestionDetails2.txt",
             "prepareData.txt"
     };
@@ -49,16 +51,19 @@ public class Diy {
 
     public void writeResults() throws IOException {
         for(String f : functionLists){
+            double percentage = 0.0;
             int numberOfBranches = 0;
             File file = new File(f);
-            Scanner scanner = new Scanner(file);
-            String total = scanner.nextLine();
-            while (scanner.hasNextLine()) {
-                numberOfBranches++;
-                scanner.nextLine();
+            if (file.exists()) {
+                Scanner scanner = new Scanner(file);
+                String total = scanner.nextLine();
+                while (scanner.hasNextLine()) {
+                    numberOfBranches++;
+                    scanner.nextLine();
+                }
+                scanner.close();
+                percentage = ((double) numberOfBranches) / Integer.parseInt(total);
             }
-            scanner.close();
-            double percentage = ((double)numberOfBranches)/Integer.parseInt(total);
             FileWriter fw = new FileWriter("branchResults.txt", true);
             PrintWriter pw = new PrintWriter(fw);
             pw.println(f + ": " + percentage + "%");
@@ -99,6 +104,5 @@ public class Diy {
         // do some stuff with the files that have all the IDs reached + total number of branches (at the top)
         diy.writeResults();
     }
-
 
 }
