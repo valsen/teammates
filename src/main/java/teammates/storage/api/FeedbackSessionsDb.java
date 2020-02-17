@@ -21,6 +21,7 @@ import teammates.common.exception.InvalidParametersException;
 import teammates.common.util.Assumption;
 import teammates.common.util.Const;
 import teammates.common.util.TimeHelper;
+import teammates.diy.Diy;
 import teammates.storage.entity.FeedbackSession;
 
 /**
@@ -193,12 +194,11 @@ public class FeedbackSessionsDb extends EntitiesDb<FeedbackSession, FeedbackSess
                 .filter(session -> !session.isSessionDeleted())
                 .collect(Collectors.toList());
     }
-
     /**
      * Update a feedback session by {@link FeedbackSessionAttributes.UpdateOptions}.
      *
      * <p>The update will be done in a transaction.
-     *
+     * Id = 6, numberOfIds = 8
      * @return updated feedback session
      * @throws InvalidParametersException if attributes to update are not valid
      * @throws EntityDoesNotExistException if the feedback session cannot be found
@@ -208,9 +208,12 @@ public class FeedbackSessionsDb extends EntitiesDb<FeedbackSession, FeedbackSess
     public FeedbackSessionAttributes updateFeedbackSession(FeedbackSessionAttributes.UpdateOptions updateOptions)
             throws InvalidParametersException, EntityDoesNotExistException {
         Assumption.assertNotNull(Const.StatusCodes.DBLEVEL_NULL_INPUT, updateOptions);
-
+        Diy diy = new Diy();
+        diy.initializeFile("updateFeedbackSession", 8);
         FeedbackSessionAttributes[] newAttributesFinal = new FeedbackSessionAttributes[] { null };
         try {
+            //branch 1
+            diy.setReachedId("updateFeedbackSession", 0);
             FeedbackSessionsDb thisDb = this;
             ofy().transact(new VoidWork() {
                 @Override
@@ -218,6 +221,8 @@ public class FeedbackSessionsDb extends EntitiesDb<FeedbackSession, FeedbackSess
                     FeedbackSession feedbackSession =
                             getFeedbackSessionEntity(updateOptions.getFeedbackSessionName(), updateOptions.getCourseId());
                     if (feedbackSession == null) {
+                        //branch 2
+                        diy.setReachedId("updateFeedbackSession", 1);
                         throw new RuntimeException(
                                 new EntityDoesNotExistException(ERROR_UPDATE_NON_EXISTENT + updateOptions));
                     }
@@ -228,6 +233,8 @@ public class FeedbackSessionsDb extends EntitiesDb<FeedbackSession, FeedbackSess
 
                     newAttributes.sanitizeForSaving();
                     if (!newAttributes.isValid()) {
+                        //branch 3
+                        diy.setReachedId("updateFeedbackSession", 2);
                         throw new RuntimeException(
                                 new InvalidParametersException(newAttributes.getInvalidityInfo()));
                     }
@@ -235,34 +242,36 @@ public class FeedbackSessionsDb extends EntitiesDb<FeedbackSession, FeedbackSess
                     // update only if change
                     boolean hasSameAttributes =
                             thisDb.<String>hasSameValue(feedbackSession.getInstructions(), newAttributes.getInstructions())
-                            && thisDb.<Instant>hasSameValue(feedbackSession.getStartTime(), newAttributes.getStartTime())
-                            && thisDb.<Instant>hasSameValue(feedbackSession.getEndTime(), newAttributes.getEndTime())
-                            && thisDb.<Instant>hasSameValue(
+                                    && thisDb.<Instant>hasSameValue(feedbackSession.getStartTime(), newAttributes.getStartTime())
+                                    && thisDb.<Instant>hasSameValue(feedbackSession.getEndTime(), newAttributes.getEndTime())
+                                    && thisDb.<Instant>hasSameValue(
                                     feedbackSession.getSessionVisibleFromTime(), newAttributes.getSessionVisibleFromTime())
-                            && thisDb.<Instant>hasSameValue(
+                                    && thisDb.<Instant>hasSameValue(
                                     feedbackSession.getResultsVisibleFromTime(), newAttributes.getResultsVisibleFromTime())
-                            && thisDb.<String>hasSameValue(
+                                    && thisDb.<String>hasSameValue(
                                     feedbackSession.getTimeZone(), newAttributes.getTimeZone().getId())
-                            && thisDb.<Long>hasSameValue(
+                                    && thisDb.<Long>hasSameValue(
                                     feedbackSession.getGracePeriod(), newAttributes.getGracePeriodMinutes())
-                            && thisDb.<Boolean>hasSameValue(
+                                    && thisDb.<Boolean>hasSameValue(
                                     feedbackSession.isSentOpenEmail(), newAttributes.isSentOpenEmail())
-                            && thisDb.<Boolean>hasSameValue(
+                                    && thisDb.<Boolean>hasSameValue(
                                     feedbackSession.isSentClosingEmail(), newAttributes.isSentClosingEmail())
-                            && thisDb.<Boolean>hasSameValue(
+                                    && thisDb.<Boolean>hasSameValue(
                                     feedbackSession.isSentClosedEmail(), newAttributes.isSentClosedEmail())
-                            && thisDb.<Boolean>hasSameValue(
+                                    && thisDb.<Boolean>hasSameValue(
                                     feedbackSession.isSentPublishedEmail(), newAttributes.isSentPublishedEmail())
-                            && thisDb.<Boolean>hasSameValue(
+                                    && thisDb.<Boolean>hasSameValue(
                                     feedbackSession.isClosingEmailEnabled(), newAttributes.isClosingEmailEnabled())
-                            && thisDb.<Boolean>hasSameValue(
+                                    && thisDb.<Boolean>hasSameValue(
                                     feedbackSession.isPublishedEmailEnabled(), newAttributes.isPublishedEmailEnabled())
-                            && thisDb.<Set<String>>hasSameValue(
+                                    && thisDb.<Set<String>>hasSameValue(
                                     feedbackSession.getRespondingStudentList(), newAttributes.getRespondingStudentList())
-                            && thisDb.<Set<String>>hasSameValue(
+                                    && thisDb.<Set<String>>hasSameValue(
                                     feedbackSession.getRespondingInstructorList(),
                                     newAttributes.getRespondingInstructorList());
                     if (hasSameAttributes) {
+                        //branch 4
+                        diy.setReachedId("updateFeedbackSession", 3);
                         log.info(String.format(
                                 OPTIMIZED_SAVING_POLICY_APPLIED, FeedbackSession.class.getSimpleName(), updateOptions));
                         newAttributesFinal[0] = makeAttributes(feedbackSession);
@@ -293,15 +302,24 @@ public class FeedbackSessionsDb extends EntitiesDb<FeedbackSession, FeedbackSess
             });
         } catch (RuntimeException e) {
             if (e.getCause() instanceof EntityDoesNotExistException) {
+                //branch 5
+                diy.setReachedId("updateFeedbackSession", 4);
                 throw (EntityDoesNotExistException) e.getCause();
             } else if (e.getCause() instanceof InvalidParametersException) {
+                //branch 6
+                diy.setReachedId("updateFeedbackSession", 5);
                 throw (InvalidParametersException) e.getCause();
             } else {
+                //branch 7
+                diy.setReachedId("updateFeedbackSession", 6);
                 throw e;
             }
         }
+        //branch 8
+        diy.setReachedId("updateFeedbackSession", 7);
         return newAttributesFinal[0];
     }
+
 
     /**
      * Soft-deletes a specific feedback session by its name and course id.
