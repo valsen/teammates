@@ -251,8 +251,7 @@ public class FeedbackMsqQuestionDetails extends FeedbackQuestionDetails {
 
         return this.otherEnabled != newMsqDetails.otherEnabled;
     }
-
-    //ID: 10, numberOfIds: 2
+    
     @Override
     public String getQuestionWithExistingResponseSubmissionFormHtml(
             boolean sessionIsOpen, int qnIdx, int responseIdx, String courseId,
@@ -260,14 +259,12 @@ public class FeedbackMsqQuestionDetails extends FeedbackQuestionDetails {
         FeedbackMsqResponseDetails existingMsqResponse = (FeedbackMsqResponseDetails) existingResponseDetails;
         List<String> choices = new ArrayList<>();
         Diy diy = new Diy();
-        diy.initializeFile("getQuestionWithExistingResponseSubmissionFormHtml", 2);
+        diy.initializeFile("getQuestionWithExistingResponseSubmissionFormHtml", 4);
         StringBuilder optionListHtml = new StringBuilder();
         String optionFragmentTemplate = FormTemplates.MSQ_SUBMISSION_FORM_OPTIONFRAGMENT;
         Boolean isOtherSelected = existingMsqResponse.isOtherOptionAnswer();
 
         for (String choice : choices) {
-            //branch 1
-            diy.setReachedId("getQuestionWithExistingResponseSubmissionFormHtml",0);
             String optionFragment =
                     Templates.populateTemplate(optionFragmentTemplate,
                             Slots.QUESTION_INDEX, Integer.toString(qnIdx),
@@ -281,7 +278,6 @@ public class FeedbackMsqQuestionDetails extends FeedbackQuestionDetails {
         }
 
         if (otherEnabled) {
-            //branch 2
             diy.setReachedId("getQuestionWithExistingResponseSubmissionFormHtml", 1);
             String otherOptionFragmentTemplate = FormTemplates.MSQ_SUBMISSION_FORM_OTHEROPTIONFRAGMENT;
             String otherOptionFragment =
@@ -298,13 +294,15 @@ public class FeedbackMsqQuestionDetails extends FeedbackQuestionDetails {
                             SanitizationHelper.sanitizeForHtml(existingMsqResponse.getOtherFieldContent()),
                             Slots.MSQ_OTHER_OPTION_ANSWER, isOtherSelected ? "1" : "0");
             optionListHtml.append(otherOptionFragment).append(System.lineSeparator());
+        } else {
+            diy.setReachedId("getQuestionWithExistingResponseSubmissionFormHtml", 2);
         }
 
         boolean isMinSelectableChoicesEnabled = minSelectableChoices != Integer.MIN_VALUE;
 
         if (!isMinSelectableChoicesEnabled) {
             //branch 3
-            diy.setReachedId("getQuestionWithExistingResponseSubmissionFormHtml", 2);
+            diy.setReachedId("getQuestionWithExistingResponseSubmissionFormHtml", 3);
             // additional checkbox for user to submit a blank response ("None of the above")
             String optionFragment =
                     Templates.populateTemplate(optionFragmentTemplate,
@@ -316,6 +314,8 @@ public class FeedbackMsqQuestionDetails extends FeedbackQuestionDetails {
                             Slots.MSQ_CHOICE_VALUE, "",
                             Slots.MSQ_CHOICE_TEXT, "<i>" + Const.NONE_OF_THE_ABOVE + "</i>");
             optionListHtml.append(optionFragment).append(System.lineSeparator());
+        } else {
+            diy.setReachedId("getQuestionWithExistingResponseSubmissionFormHtml", 4);
         }
 
         boolean isMaxSelectableChoicesEnabled = maxSelectableChoices != Integer.MIN_VALUE;

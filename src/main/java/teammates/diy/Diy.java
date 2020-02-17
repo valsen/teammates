@@ -9,13 +9,15 @@ public class Diy {
             "getRecipientsForQuestion.txt",
             "isResponseVisibleForUser.txt",
             "updateFeedbackSession.txt",
-            "getQuestionWithExistingResponseSubmissionFormHtml.txt"
+            "getQuestionWithExistingResponseSubmissionFormHtml.txt",
+            "validateQuestionDetails2.txt",
+            "prepareData.txt"
     };
 
     private void runTests(){
         Process proc = null;
         try {
-            proc = Runtime.getRuntime().exec("./gradlew.bat componentTests");
+            proc = Runtime.getRuntime().exec("./gradlew componentTests");
             proc.waitFor(4, TimeUnit.MINUTES);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -102,6 +104,5 @@ public class Diy {
         // do some stuff with the files that have all the IDs reached + total number of branches (at the top)
         diy.writeResults();
     }
-
 
 }
