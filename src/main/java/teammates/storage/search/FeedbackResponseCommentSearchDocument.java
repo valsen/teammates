@@ -50,11 +50,14 @@ public class FeedbackResponseCommentSearchDocument extends SearchDocument {
 
     @Override
     protected void prepareData() {
+        Diy diy = new Diy();
+        diy.initializeFile("prepareData", 23);
+
         if (comment == null) {
-            Diy.setReachedId("prepareData", 1);
+            diy.setReachedId("prepareData", 1);
             return;
         } else {
-            Diy.setReachedId("prepareData", 2);
+            diy.setReachedId("prepareData", 2);
         }
 
         relatedSession = fsDb.getFeedbackSession(comment.courseId, comment.feedbackSessionName);
@@ -69,27 +72,27 @@ public class FeedbackResponseCommentSearchDocument extends SearchDocument {
         Set<String> addedEmailSet = new HashSet<>();
         if (relatedQuestion.giverType == FeedbackParticipantType.INSTRUCTORS
                 || relatedQuestion.giverType == FeedbackParticipantType.SELF) {
-            Diy.setReachedId("prepareData", 3);
+            diy.setReachedId("prepareData", 3);
             InstructorAttributes ins = instructorsDb.getInstructorForEmail(comment.courseId, relatedResponse.giver);
             if (ins == null || addedEmailSet.contains(ins.email)) {
-                Diy.setReachedId("prepareData", 4);
+                diy.setReachedId("prepareData", 4);
                 responseGiverName = Const.USER_UNKNOWN_TEXT;
             } else {
-                Diy.setReachedId("prepareData", 5);
+                diy.setReachedId("prepareData", 5);
                 relatedInstructors.add(ins);
                 addedEmailSet.add(ins.email);
                 responseGiverName = ins.name + " (" + ins.displayedName + ")";
             }
         } else if (relatedQuestion.giverType == FeedbackParticipantType.TEAMS) {
-            Diy.setReachedId("prepareData", 6);
+            diy.setReachedId("prepareData", 6);
             responseGiverName = relatedResponse.giver;
         } else {
             StudentAttributes stu = studentsDb.getStudentForEmail(comment.courseId, relatedResponse.giver);
             if (stu == null || addedEmailSet.contains(stu.email)) {
-                Diy.setReachedId("prepareData", 7);
+                diy.setReachedId("prepareData", 7);
                 responseGiverName = Const.USER_UNKNOWN_TEXT;
             } else {
-                Diy.setReachedId("prepareData", 8);
+                diy.setReachedId("prepareData", 8);
                 relatedStudents.add(stu);
                 addedEmailSet.add(stu.email);
                 responseGiverName = stu.name + " (" + stu.team + ")";
@@ -98,64 +101,64 @@ public class FeedbackResponseCommentSearchDocument extends SearchDocument {
 
         switch (relatedQuestion.recipientType) {
         case INSTRUCTORS:
-            Diy.setReachedId("prepareData", 9);
+            diy.setReachedId("prepareData", 9);
             InstructorAttributes ins = instructorsDb.getInstructorForEmail(comment.courseId, relatedResponse.recipient);
             if (ins != null && !addedEmailSet.contains(ins.email)) {
-                Diy.setReachedId("prepareData", 10);
+                diy.setReachedId("prepareData", 10);
                 relatedInstructors.add(ins);
                 addedEmailSet.add(ins.email);
                 responseRecipientName = ins.name + " (" + ins.displayedName + ")";
             } else {
-                Diy.setReachedId("prepareData", 11);
+                diy.setReachedId("prepareData", 11);
             }
             break;
         case SELF:
-            Diy.setReachedId("prepareData", 12);
+            diy.setReachedId("prepareData", 12);
             responseRecipientName = responseGiverName;
             break;
         case NONE:
-            Diy.setReachedId("prepareData", 13);
+            diy.setReachedId("prepareData", 13);
             responseRecipientName = Const.USER_NOBODY_TEXT;
             break;
         case TEAMS:
-            Diy.setReachedId("prepareData", 14);
+            diy.setReachedId("prepareData", 14);
             responseRecipientName = relatedResponse.recipient;
             break;
         default:
-            Diy.setReachedId("prepareData", 15);
+            diy.setReachedId("prepareData", 15);
             StudentAttributes stu = studentsDb.getStudentForEmail(comment.courseId, relatedResponse.recipient);
 
             if (stu != null && !addedEmailSet.contains(stu.email)) {
-                Diy.setReachedId("prepareData", 16);
+                diy.setReachedId("prepareData", 16);
                 relatedStudents.add(stu);
                 addedEmailSet.add(stu.email);
                 responseRecipientName = stu.name + " (" + stu.team + ")";
             } else {
-                Diy.setReachedId("prepareData", 17);
+                diy.setReachedId("prepareData", 17);
             }
 
             List<StudentAttributes> team = studentsDb.getStudentsForTeam(relatedResponse.recipient, comment.courseId);
             if (team != null) {
-                Diy.setReachedId("prepareData", 18);
+                diy.setReachedId("prepareData", 18);
                 responseRecipientName = relatedResponse.recipient; // it's actually a team name here
                 for (StudentAttributes studentInTeam : team) {
                     if (!addedEmailSet.contains(studentInTeam.email)) {
-                        Diy.setReachedId("prepareData", 19);
+                        diy.setReachedId("prepareData", 19);
                         relatedStudents.add(studentInTeam);
                         addedEmailSet.add(studentInTeam.email);
                     } else {
-                        Diy.setReachedId("prepareData", 20);
+                        diy.setReachedId("prepareData", 20);
                     }
                 }
             } else {
-                Diy.setReachedId("prepareData", 21);
+                diy.setReachedId("prepareData", 21);
             }
 
             if (stu == null || team == null) {
-                Diy.setReachedId("prepareData", 22);
+                diy.setReachedId("prepareData", 22);
                 responseRecipientName = Const.USER_UNKNOWN_TEXT;
             } else {
-                Diy.setReachedId("prepareData", 23);
+                diy.setReachedId("prepareData", 23);
             }
             break;
         }

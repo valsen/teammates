@@ -505,25 +505,28 @@ public class FeedbackMcqQuestionDetails extends FeedbackQuestionDetails {
 
     @Override
     public List<String> validateQuestionDetails(String courseId) {
+        Diy diy = new Diy();
+        diy.initializeFile("validateQuestionDetails2", 20);
+
         List<String> errors = new ArrayList<>();
         if (generateOptionsFor == FeedbackParticipantType.NONE) {
-            Diy.setReachedId("validateQuestionDetails2", 1);
+            diy.setReachedId("validateQuestionDetails2", 1);
 
             if (numOfMcqChoices < Const.FeedbackQuestion.MCQ_MIN_NUM_OF_CHOICES) {
-                Diy.setReachedId("validateQuestionDetails2", 2);
+                diy.setReachedId("validateQuestionDetails2", 2);
                 errors.add(Const.FeedbackQuestion.MCQ_ERROR_NOT_ENOUGH_CHOICES
                         + Const.FeedbackQuestion.MCQ_MIN_NUM_OF_CHOICES + ".");
             } else {
-                Diy.setReachedId("validateQuestionDetails2", 3);
+                diy.setReachedId("validateQuestionDetails2", 3);
             }
 
             // If there are Empty Mcq options entered trigger this error
             boolean isEmptyMcqOptionEntered = mcqChoices.stream().anyMatch(mcqText -> mcqText.trim().equals(""));
             if (isEmptyMcqOptionEntered) {
-                Diy.setReachedId("validateQuestionDetails2", 4);
+                diy.setReachedId("validateQuestionDetails2", 4);
                 errors.add(Const.FeedbackQuestion.MCQ_ERROR_EMPTY_MCQ_OPTION);
             } else {
-                Diy.setReachedId("validateQuestionDetails2", 5);
+                diy.setReachedId("validateQuestionDetails2", 5);
             }
 
             // If weights are enabled, number of choices and weights should be same.
@@ -531,65 +534,65 @@ public class FeedbackMcqQuestionDetails extends FeedbackQuestionDetails {
             // the mcqChoices.size() will be greater than mcqWeights.size(),
             // in that case, trigger this error.
             if (hasAssignedWeights && mcqChoices.size() != mcqWeights.size()) {
-                Diy.setReachedId("validateQuestionDetails2", 6);
+                diy.setReachedId("validateQuestionDetails2", 6);
                 errors.add(Const.FeedbackQuestion.MCQ_ERROR_INVALID_WEIGHT);
             } else {
-                Diy.setReachedId("validateQuestionDetails2", 7);
+                diy.setReachedId("validateQuestionDetails2", 7);
             }
 
             // If weights are not enabled, but weight list is not empty or otherWeight is not 0
             // In that case, trigger this error.
             if (!hasAssignedWeights && (!mcqWeights.isEmpty() || mcqOtherWeight != 0)) {
-                Diy.setReachedId("validateQuestionDetails2", 8);
+                diy.setReachedId("validateQuestionDetails2", 8);
                 errors.add(Const.FeedbackQuestion.MCQ_ERROR_INVALID_WEIGHT);
             } else {
-                Diy.setReachedId("validateQuestionDetails2", 9);
+                diy.setReachedId("validateQuestionDetails2", 9);
             }
 
             // If weights are enabled, but other option is disabled, and mcqOtherWeight is not 0
             // In that case, trigger this error.
             if (hasAssignedWeights && !otherEnabled && mcqOtherWeight != 0) {
-                Diy.setReachedId("validateQuestionDetails2", 10);
+                diy.setReachedId("validateQuestionDetails2", 10);
                 errors.add(Const.FeedbackQuestion.MCQ_ERROR_INVALID_WEIGHT);
             } else {
-                Diy.setReachedId("validateQuestionDetails2", 11);
+                diy.setReachedId("validateQuestionDetails2", 11);
             }
 
             // If weights are enabled, and any of the weights have negative value,
             // trigger this error.
             if (hasAssignedWeights && !mcqWeights.isEmpty()) {
-                Diy.setReachedId("validateQuestionDetails2", 12);
+                diy.setReachedId("validateQuestionDetails2", 12);
                 for (double weight : mcqWeights) {
                     if (weight < 0) {
-                        Diy.setReachedId("validateQuestionDetails2", 13);
+                        diy.setReachedId("validateQuestionDetails2", 13);
                         errors.add(Const.FeedbackQuestion.MCQ_ERROR_INVALID_WEIGHT);
                     } else {
-                        Diy.setReachedId("validateQuestionDetails2", 14);
+                        diy.setReachedId("validateQuestionDetails2", 14);
                     }
                 }
                 // If 'Other' option is enabled, and other weight has negative value,
                 // trigger this error.
                 if (otherEnabled && mcqOtherWeight < 0) {
-                    Diy.setReachedId("validateQuestionDetails2", 15);
+                    diy.setReachedId("validateQuestionDetails2", 15);
                     errors.add(Const.FeedbackQuestion.MCQ_ERROR_INVALID_WEIGHT);
                 } else {
-                    Diy.setReachedId("validateQuestionDetails2", 16);
+                    diy.setReachedId("validateQuestionDetails2", 16);
                 }
             } else {
-                Diy.setReachedId("validateQuestionDetails2", 17);
+                diy.setReachedId("validateQuestionDetails2", 17);
             }
 
             //If there are duplicate mcq options trigger this error
             boolean isDuplicateOptionsEntered = mcqChoices.stream().map(String::trim).distinct().count()
                                                 != mcqChoices.size();
             if (isDuplicateOptionsEntered) {
-                Diy.setReachedId("validateQuestionDetails2", 18);
+                diy.setReachedId("validateQuestionDetails2", 18);
                 errors.add(Const.FeedbackQuestion.MCQ_ERROR_DUPLICATE_MCQ_OPTION);
             } else {
-                Diy.setReachedId("validateQuestionDetails2", 19);
+                diy.setReachedId("validateQuestionDetails2", 19);
             }
         } else {
-            Diy.setReachedId("validateQuestionDetails2", 20);
+            diy.setReachedId("validateQuestionDetails2", 20);
         }
 
         return errors;
