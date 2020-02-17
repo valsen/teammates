@@ -41,6 +41,8 @@ import teammates.common.util.StringHelper;
 import teammates.common.util.TimeHelper;
 import teammates.storage.api.FeedbackSessionsDb;
 
+import teammates.diy.Diy;
+
 /**
  * Handles operations related to feedback sessions.
  *
@@ -1934,30 +1936,42 @@ public final class FeedbackSessionsLogic {
             FeedbackResponseAttributes response,
             FeedbackQuestionAttributes relatedQuestion, InstructorAttributes instructor) {
 
+        Diy diy = new Diy();
+        diy.initializeFile("isResponseVisibleForUser", 10);
+
         boolean isVisibleResponse = false;
         if (isInstructor(role) && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.INSTRUCTORS)
                 || response.recipient.equals(userEmail)
                         && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER)
                 || response.giver.equals(userEmail)
                 || isStudent(role) && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.STUDENTS)) {
+            diy.setReachedId("isResponseVisibleForUser", 1);
             isVisibleResponse = true;
         } else if (studentsEmailInTeam != null && isStudent(role)) {
+            diy.setReachedId("isResponseVisibleForUser", 2);
             if (relatedQuestion.recipientType == FeedbackParticipantType.TEAMS
                     && relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER)
                     && response.recipient.equals(student.team)) {
+                diy.setReachedId("isResponseVisibleForUser", 3);
                 isVisibleResponse = true;
             } else if (relatedQuestion.giverType == FeedbackParticipantType.TEAMS
                        && studentsEmailInTeam.contains(response.giver)) {
+                diy.setReachedId("isResponseVisibleForUser", 4);
                 isVisibleResponse = true;
             } else if (relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.OWN_TEAM_MEMBERS)
                        && studentsEmailInTeam.contains(response.giver)) {
+                diy.setReachedId("isResponseVisibleForUser", 5);
                 isVisibleResponse = true;
             } else if (relatedQuestion.isResponseVisibleTo(FeedbackParticipantType.RECEIVER_TEAM_MEMBERS)
                        && studentsEmailInTeam.contains(response.recipient)) {
+                diy.setReachedId("isResponseVisibleForUser", 6);
                 isVisibleResponse = true;
             }
+        } else {
+            diy.setReachedId("isResponseVisibleForUser", 7);
         }
         if (isVisibleResponse && instructor != null) {
+            diy.setReachedId("isResponseVisibleForUser", 8);
             boolean isGiverSectionRestricted =
                     !instructor.isAllowedForPrivilege(response.giverSection,
                                                       response.feedbackSessionName,
@@ -1972,8 +1986,11 @@ public final class FeedbackSessionsLogic {
 
             boolean isNotAllowedForInstructor = isGiverSectionRestricted || isRecipientSectionRestricted;
             if (isNotAllowedForInstructor) {
+                diy.setReachedId("isResponseVisibleForUser", 9);
                 isVisibleResponse = false;
             }
+        } else {
+            diy.setReachedId("isResponseVisibleForUser", 10);
         }
         return isVisibleResponse;
     }
