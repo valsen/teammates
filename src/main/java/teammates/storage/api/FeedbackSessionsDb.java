@@ -198,7 +198,7 @@ public class FeedbackSessionsDb extends EntitiesDb<FeedbackSession, FeedbackSess
      * Update a feedback session by {@link FeedbackSessionAttributes.UpdateOptions}.
      *
      * <p>The update will be done in a transaction.
-     * Id = 6, numberOfIds = 8
+     * Id = 6, numberOfIds = 10 (0-10, skipping 7)
      * @return updated feedback session
      * @throws InvalidParametersException if attributes to update are not valid
      * @throws EntityDoesNotExistException if the feedback session cannot be found
@@ -209,7 +209,7 @@ public class FeedbackSessionsDb extends EntitiesDb<FeedbackSession, FeedbackSess
             throws InvalidParametersException, EntityDoesNotExistException {
         Assumption.assertNotNull(Const.StatusCodes.DBLEVEL_NULL_INPUT, updateOptions);
         Diy diy = new Diy();
-        diy.initializeFile("updateFeedbackSession", 8);
+        diy.initializeFile("updateFeedbackSession", 10);
         FeedbackSessionAttributes[] newAttributesFinal = new FeedbackSessionAttributes[] { null };
         try {
             //branch 1
@@ -225,6 +225,9 @@ public class FeedbackSessionsDb extends EntitiesDb<FeedbackSession, FeedbackSess
                         diy.setReachedId("updateFeedbackSession", 1);
                         throw new RuntimeException(
                                 new EntityDoesNotExistException(ERROR_UPDATE_NON_EXISTENT + updateOptions));
+                    } else{
+                        //branch 3
+                        diy.setReachedId("updateFeedbackSession", 2);
                     }
 
                     newAttributesFinal[0] = makeAttributes(feedbackSession);
@@ -233,10 +236,13 @@ public class FeedbackSessionsDb extends EntitiesDb<FeedbackSession, FeedbackSess
 
                     newAttributes.sanitizeForSaving();
                     if (!newAttributes.isValid()) {
-                        //branch 3
-                        diy.setReachedId("updateFeedbackSession", 2);
+                        //branch 4
+                        diy.setReachedId("updateFeedbackSession", 3);
                         throw new RuntimeException(
                                 new InvalidParametersException(newAttributes.getInvalidityInfo()));
+                    }else{
+                        //branch 5
+                        diy.setReachedId("updateFeedbackSession", 4);
                     }
 
                     // update only if change
@@ -270,12 +276,15 @@ public class FeedbackSessionsDb extends EntitiesDb<FeedbackSession, FeedbackSess
                                     feedbackSession.getRespondingInstructorList(),
                                     newAttributes.getRespondingInstructorList());
                     if (hasSameAttributes) {
-                        //branch 4
-                        diy.setReachedId("updateFeedbackSession", 3);
+                        //branch 6
+                        diy.setReachedId("updateFeedbackSession", 5);
                         log.info(String.format(
                                 OPTIMIZED_SAVING_POLICY_APPLIED, FeedbackSession.class.getSimpleName(), updateOptions));
                         newAttributesFinal[0] = makeAttributes(feedbackSession);
                         return;
+                    }else{
+                        //branch 7
+                        diy.setReachedId("updateFeedbackSession", 6);
                     }
 
                     feedbackSession.setInstructions(newAttributes.getInstructions());
@@ -298,27 +307,28 @@ public class FeedbackSessionsDb extends EntitiesDb<FeedbackSession, FeedbackSess
                     saveEntity(feedbackSession);
 
                     newAttributesFinal[0] = makeAttributes(feedbackSession);
+
                 }
             });
         } catch (RuntimeException e) {
             if (e.getCause() instanceof EntityDoesNotExistException) {
-                //branch 5
-                diy.setReachedId("updateFeedbackSession", 4);
+                //branch 8
+                diy.setReachedId("updateFeedbackSession", 7);
                 throw (EntityDoesNotExistException) e.getCause();
             } else if (e.getCause() instanceof InvalidParametersException) {
-                //branch 6
-                diy.setReachedId("updateFeedbackSession", 5);
+                //branch 9
+                diy.setReachedId("updateFeedbackSession", 8);
                 throw (InvalidParametersException) e.getCause();
             } else {
-                //branch 7
-                diy.setReachedId("updateFeedbackSession", 6);
+                //branch 10
+                diy.setReachedId("updateFeedbackSession", 9);
                 throw e;
             }
         }
-        //branch 8
-        diy.setReachedId("updateFeedbackSession", 7);
+
         return newAttributesFinal[0];
     }
+
 
 
     /**
