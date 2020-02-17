@@ -4,7 +4,11 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 public class Diy {
-    String[] functionLists = new String[] {"getRecipientsOfQuestion.txt", "getRecipientsForQuestion.txt"};
+    String[] functionLists = new String[] {
+            "getRecipientsOfQuestion.txt",
+            "getRecipientsForQuestion.txt",
+            "isResponseVisibleForUser.txt"
+    };
 
     private void runTests(){
         Process proc = null;
