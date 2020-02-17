@@ -12,6 +12,7 @@ public class Diy {
             "getQuestionWithExistingResponseSubmissionFormHtml.txt",
             "validateQuestionDetails2.txt",
             "prepareData.txt",
+            "execute.txt"
             "equals.txt",
             "validateQuestionDetails1.txt"
     };
