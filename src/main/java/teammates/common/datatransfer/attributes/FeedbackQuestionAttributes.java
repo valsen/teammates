@@ -15,7 +15,6 @@ import teammates.common.util.Const;
 import teammates.common.util.FieldValidator;
 import teammates.common.util.JsonUtils;
 import teammates.common.util.SanitizationHelper;
-import teammates.diy.Diy;
 import teammates.storage.entity.FeedbackQuestion;
 
 public class FeedbackQuestionAttributes extends EntityAttributes<FeedbackQuestion>
@@ -250,165 +249,90 @@ public class FeedbackQuestionAttributes extends EntityAttributes<FeedbackQuestio
 
     @Override
     public boolean equals(Object obj) {
-        Diy diy = new Diy();
-        diy.initializeFile("equals", 48);
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        String method = stackTrace[1].getMethodName();
-
         if (this == obj) {
-            diy.setReachedId(method, 1);
             return true;
-        } else {
-            diy.setReachedId(method, 2);
         }
 
         if (obj == null) {
-            diy.setReachedId(method, 3);
             return false;
-        } else {
-            diy.setReachedId(method, 4);
         }
 
         if (getClass() != obj.getClass()) {
-            diy.setReachedId(method, 5);
             return false;
-        } else {
-            diy.setReachedId(method, 6);
         }
 
         FeedbackQuestionAttributes other = (FeedbackQuestionAttributes) obj;
 
         if (courseId == null) {
-            diy.setReachedId(method, 7);
             if (other.courseId != null) {
-                diy.setReachedId(method, 8);
                 return false;
-            } else {
-                diy.setReachedId(method, 9);
             }
         } else if (!courseId.equals(other.courseId)) {
-            diy.setReachedId(method, 10);
             return false;
-        } else {
-            diy.setReachedId(method, 11);
         }
 
         if (feedbackSessionName == null) {
-            diy.setReachedId(method, 12);
             if (other.feedbackSessionName != null) {
-                diy.setReachedId(method, 13);
                 return false;
-            } else {
-                diy.setReachedId(method, 14);
             }
         } else if (!feedbackSessionName.equals(other.feedbackSessionName)) {
-            diy.setReachedId(method, 15);
             return false;
-        } else {
-            diy.setReachedId(method, 16);
         }
 
         if (giverType != other.giverType) {
-            diy.setReachedId(method, 16);
             return false;
-        } else {
-            diy.setReachedId(method, 17);
         }
 
         if (numberOfEntitiesToGiveFeedbackTo != other.numberOfEntitiesToGiveFeedbackTo) {
-            diy.setReachedId(method, 18);
             return false;
-        } else {
-            diy.setReachedId(method, 19);
         }
 
         if (questionNumber != other.questionNumber) {
-            diy.setReachedId(method, 20);
             return false;
-        } else {
-            diy.setReachedId(method, 21);
         }
 
         if (questionDetails == null) {
-            diy.setReachedId(method, 22);
             if (other.questionDetails != null) {
-                diy.setReachedId(method, 23);
                 return false;
-            } else {
-                diy.setReachedId(method, 24);
             }
         } else if (!questionDetails.equals(other.questionDetails)) {
-            diy.setReachedId(method, 25);
             return false;
-        } else {
-            diy.setReachedId(method, 26);
         }
 
         if (questionDescription == null) {
-            diy.setReachedId(method, 27);
             if (other.questionDescription != null) {
-                diy.setReachedId(method, 28);
                 return false;
-            } else {
-                diy.setReachedId(method, 29);
             }
         } else if (!questionDescription.equals(other.questionDescription)) {
-            diy.setReachedId(method, 30);
             return false;
-        } else {
-            diy.setReachedId(method, 31);
         }
 
         if (recipientType != other.recipientType) {
-            diy.setReachedId(method, 32);
             return false;
-        } else {
-            diy.setReachedId(method, 33);
         }
 
         if (showGiverNameTo == null) {
-            diy.setReachedId(method, 34);
             if (other.showGiverNameTo != null) {
-                diy.setReachedId(method, 35);
                 return false;
-            } else {
-                diy.setReachedId(method, 36);
             }
         } else if (!showGiverNameTo.equals(other.showGiverNameTo)) {
-            diy.setReachedId(method, 37);
             return false;
-        } else {
-            diy.setReachedId(method, 38);
         }
 
         if (showRecipientNameTo == null) {
-            diy.setReachedId(method, 39);
             if (other.showRecipientNameTo != null) {
-                diy.setReachedId(method, 40);
                 return false;
-            } else {
-                diy.setReachedId(method, 41);
             }
         } else if (!showRecipientNameTo.equals(other.showRecipientNameTo)) {
-            diy.setReachedId(method, 42);
             return false;
-        } else {
-            diy.setReachedId(method, 43);
         }
 
         if (showResponsesTo == null) {
-            diy.setReachedId(method, 44);
             if (other.showResponsesTo != null) {
-                diy.setReachedId(method, 45);
                 return false;
-            } else {
-                diy.setReachedId(method, 46);
             }
         } else if (!showResponsesTo.equals(other.showResponsesTo)) {
-            diy.setReachedId(method, 47);
             return false;
-        } else {
-            diy.setReachedId(method, 48);
         }
 
         return true;
