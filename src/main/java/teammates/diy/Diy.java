@@ -12,7 +12,9 @@ public class Diy {
             "getQuestionWithExistingResponseSubmissionFormHtml.txt",
             "validateQuestionDetails2.txt",
             "prepareData.txt",
-            "equals"
+            "execute.txt",
+            "equals.txt",
+            "validateQuestionDetails1.txt"
     };
 
     private void runTests(){
@@ -52,7 +54,7 @@ public class Diy {
 
     public void writeResults() throws IOException {
         for(String f : functionLists){
-            double percentage = 0.0;
+            int percentage = 0;
             int numberOfBranches = 0;
             File file = new File(f);
             if (file.exists()) {
@@ -63,7 +65,7 @@ public class Diy {
                     scanner.nextLine();
                 }
                 scanner.close();
-                percentage = ((double) numberOfBranches) / Integer.parseInt(total);
+                percentage = (int) (100 * numberOfBranches / Double.parseDouble(total));
             }
             FileWriter fw = new FileWriter("branchResults.txt", true);
             PrintWriter pw = new PrintWriter(fw);
