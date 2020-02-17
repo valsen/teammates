@@ -12,7 +12,8 @@ public class Diy {
             "getQuestionWithExistingResponseSubmissionFormHtml.txt",
             "validateQuestionDetails2.txt",
             "prepareData.txt",
-            "equals"
+            "equals",
+            "execute.txt"
     };
 
     private void runTests(){
