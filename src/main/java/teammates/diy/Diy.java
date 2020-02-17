@@ -7,13 +7,15 @@ public class Diy {
     String[] functionLists = new String[] {
             "getRecipientsOfQuestion.txt",
             "getRecipientsForQuestion.txt",
-            "isResponseVisibleForUser.txt"
+            "isResponseVisibleForUser.txt",
+            "updateFeedbackSession.txt",
+            "getQuestionWithExistingResponseSubmissionFormHtml.txt"
     };
 
     private void runTests(){
         Process proc = null;
         try {
-            proc = Runtime.getRuntime().exec("./gradlew componentTests");
+            proc = Runtime.getRuntime().exec("./gradlew.bat componentTests");
             proc.waitFor(4, TimeUnit.MINUTES);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -47,16 +49,19 @@ public class Diy {
 
     public void writeResults() throws IOException {
         for(String f : functionLists){
+            double percentage = 0.0;
             int numberOfBranches = 0;
             File file = new File(f);
-            Scanner scanner = new Scanner(file);
-            String total = scanner.nextLine();
-            while (scanner.hasNextLine()) {
-                numberOfBranches++;
-                scanner.nextLine();
+            if (file.exists()) {
+                Scanner scanner = new Scanner(file);
+                String total = scanner.nextLine();
+                while (scanner.hasNextLine()) {
+                    numberOfBranches++;
+                    scanner.nextLine();
+                }
+                scanner.close();
+                percentage = ((double) numberOfBranches) / Integer.parseInt(total);
             }
-            scanner.close();
-            double percentage = ((double)numberOfBranches)/Integer.parseInt(total);
             FileWriter fw = new FileWriter("branchResults.txt", true);
             PrintWriter pw = new PrintWriter(fw);
             pw.println(f + ": " + percentage + "%");

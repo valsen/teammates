@@ -25,6 +25,7 @@ import teammates.common.util.StringHelper;
 import teammates.common.util.Templates;
 import teammates.common.util.Templates.FeedbackQuestion.FormTemplates;
 import teammates.common.util.Templates.FeedbackQuestion.Slots;
+import teammates.diy.Diy;
 import teammates.logic.core.CoursesLogic;
 import teammates.logic.core.InstructorsLogic;
 import teammates.logic.core.StudentsLogic;
@@ -251,18 +252,22 @@ public class FeedbackMsqQuestionDetails extends FeedbackQuestionDetails {
         return this.otherEnabled != newMsqDetails.otherEnabled;
     }
 
+    //ID: 10, numberOfIds: 2
     @Override
     public String getQuestionWithExistingResponseSubmissionFormHtml(
             boolean sessionIsOpen, int qnIdx, int responseIdx, String courseId,
             int totalNumRecipients, FeedbackResponseDetails existingResponseDetails, StudentAttributes student) {
         FeedbackMsqResponseDetails existingMsqResponse = (FeedbackMsqResponseDetails) existingResponseDetails;
         List<String> choices = new ArrayList<>();
-
+        Diy diy = new Diy();
+        diy.initializeFile("getQuestionWithExistingResponseSubmissionFormHtml", 2);
         StringBuilder optionListHtml = new StringBuilder();
         String optionFragmentTemplate = FormTemplates.MSQ_SUBMISSION_FORM_OPTIONFRAGMENT;
         Boolean isOtherSelected = existingMsqResponse.isOtherOptionAnswer();
 
         for (String choice : choices) {
+            //branch 1
+            diy.setReachedId("getQuestionWithExistingResponseSubmissionFormHtml",0);
             String optionFragment =
                     Templates.populateTemplate(optionFragmentTemplate,
                             Slots.QUESTION_INDEX, Integer.toString(qnIdx),
@@ -276,6 +281,8 @@ public class FeedbackMsqQuestionDetails extends FeedbackQuestionDetails {
         }
 
         if (otherEnabled) {
+            //branch 2
+            diy.setReachedId("getQuestionWithExistingResponseSubmissionFormHtml", 1);
             String otherOptionFragmentTemplate = FormTemplates.MSQ_SUBMISSION_FORM_OTHEROPTIONFRAGMENT;
             String otherOptionFragment =
                     Templates.populateTemplate(otherOptionFragmentTemplate,
@@ -286,9 +293,9 @@ public class FeedbackMsqQuestionDetails extends FeedbackQuestionDetails {
                             Slots.CHECKED, isOtherSelected ? "checked" : "",
                             Slots.FEEDBACK_RESPONSE_TEXT, Const.ParamsNames.FEEDBACK_RESPONSE_TEXT,
                             Slots.MSQ_PARAM_IS_OTHER_OPTION_ANSWER,
-                                    Const.ParamsNames.FEEDBACK_QUESTION_MSQ_ISOTHEROPTIONANSWER,
+                            Const.ParamsNames.FEEDBACK_QUESTION_MSQ_ISOTHEROPTIONANSWER,
                             Slots.MSQ_CHOICE_VALUE,
-                                    SanitizationHelper.sanitizeForHtml(existingMsqResponse.getOtherFieldContent()),
+                            SanitizationHelper.sanitizeForHtml(existingMsqResponse.getOtherFieldContent()),
                             Slots.MSQ_OTHER_OPTION_ANSWER, isOtherSelected ? "1" : "0");
             optionListHtml.append(otherOptionFragment).append(System.lineSeparator());
         }
@@ -296,6 +303,8 @@ public class FeedbackMsqQuestionDetails extends FeedbackQuestionDetails {
         boolean isMinSelectableChoicesEnabled = minSelectableChoices != Integer.MIN_VALUE;
 
         if (!isMinSelectableChoicesEnabled) {
+            //branch 3
+            diy.setReachedId("getQuestionWithExistingResponseSubmissionFormHtml", 2);
             // additional checkbox for user to submit a blank response ("None of the above")
             String optionFragment =
                     Templates.populateTemplate(optionFragmentTemplate,
@@ -322,9 +331,9 @@ public class FeedbackMsqQuestionDetails extends FeedbackQuestionDetails {
                 Slots.MSQ_PARAM_MAX_SELECTABLE_CHOICES, Const.ParamsNames.FEEDBACK_QUESTION_MSQ_MAX_SELECTABLE_CHOICES,
                 Slots.MSQ_PARAM_MIN_SELECTABLE_CHOICES, Const.ParamsNames.FEEDBACK_QUESTION_MSQ_MIN_SELECTABLE_CHOICES,
                 Slots.MSQ_MAX_SELECTABLE_CHOICES,
-                        isMaxSelectableChoicesEnabled ? Integer.toString(maxSelectableChoices) : "-1",
+                isMaxSelectableChoicesEnabled ? Integer.toString(maxSelectableChoices) : "-1",
                 Slots.MSQ_MIN_SELECTABLE_CHOICES,
-                        isMinSelectableChoicesEnabled ? Integer.toString(minSelectableChoices) : "-1");
+                isMinSelectableChoicesEnabled ? Integer.toString(minSelectableChoices) : "-1");
     }
 
     @Override
