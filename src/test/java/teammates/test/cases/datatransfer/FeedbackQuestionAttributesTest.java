@@ -386,33 +386,33 @@ public class FeedbackQuestionAttributesTest extends BaseAttributesTest {
         assertFalse(fq.isValid());
 
         String errorMessage = getPopulatedEmptyStringErrorMessage(
-                                  FieldValidator.SIZE_CAPPED_NON_EMPTY_STRING_ERROR_MESSAGE_EMPTY_STRING_FOR_SESSION_NAME,
-                                  FieldValidator.FEEDBACK_SESSION_NAME_FIELD_NAME,
-                                  FieldValidator.FEEDBACK_SESSION_NAME_MAX_LENGTH) + System.lineSeparator()
-                              + getPopulatedEmptyStringErrorMessage(
-                                    FieldValidator.COURSE_ID_ERROR_MESSAGE_EMPTY_STRING,
-                                    FieldValidator.COURSE_ID_FIELD_NAME, FieldValidator.COURSE_ID_MAX_LENGTH)
-                              + System.lineSeparator()
-                              + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE, fq.giverType.toString(),
-                                              FieldValidator.GIVER_TYPE_NAME) + System.lineSeparator()
-                              + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE, fq.recipientType.toString(),
-                                              FieldValidator.RECIPIENT_TYPE_NAME) + System.lineSeparator()
-                              + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE,
-                                              fq.showGiverNameTo.get(0).toString(),
-                                              FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
-                              + "Trying to show giver name to STUDENTS without showing response first."
-                              + System.lineSeparator()
-                              + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE,
-                                              fq.showRecipientNameTo.get(0).toString(),
-                                              FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
-                              + "Trying to show recipient name to STUDENTS without showing response first."
-                              + System.lineSeparator()
-                              + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE,
-                                              fq.showResponsesTo.get(0).toString(),
-                                              FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
-                              + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE,
-                                              fq.showResponsesTo.get(1).toString(),
-                                              FieldValidator.VIEWER_TYPE_NAME);
+                FieldValidator.SIZE_CAPPED_NON_EMPTY_STRING_ERROR_MESSAGE_EMPTY_STRING_FOR_SESSION_NAME,
+                FieldValidator.FEEDBACK_SESSION_NAME_FIELD_NAME,
+                FieldValidator.FEEDBACK_SESSION_NAME_MAX_LENGTH) + System.lineSeparator()
+                + getPopulatedEmptyStringErrorMessage(
+                FieldValidator.COURSE_ID_ERROR_MESSAGE_EMPTY_STRING,
+                FieldValidator.COURSE_ID_FIELD_NAME, FieldValidator.COURSE_ID_MAX_LENGTH)
+                + System.lineSeparator()
+                + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE, fq.giverType.toString(),
+                FieldValidator.GIVER_TYPE_NAME) + System.lineSeparator()
+                + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE, fq.recipientType.toString(),
+                FieldValidator.RECIPIENT_TYPE_NAME) + System.lineSeparator()
+                + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE,
+                fq.showGiverNameTo.get(0).toString(),
+                FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
+                + "Trying to show giver name to STUDENTS without showing response first."
+                + System.lineSeparator()
+                + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE,
+                fq.showRecipientNameTo.get(0).toString(),
+                FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
+                + "Trying to show recipient name to STUDENTS without showing response first."
+                + System.lineSeparator()
+                + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE,
+                fq.showResponsesTo.get(0).toString(),
+                FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
+                + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE,
+                fq.showResponsesTo.get(1).toString(),
+                FieldValidator.VIEWER_TYPE_NAME);
 
         assertEquals(errorMessage, StringHelper.toString(fq.getInvalidityInfo()));
 
@@ -424,20 +424,20 @@ public class FeedbackQuestionAttributesTest extends BaseAttributesTest {
         assertFalse(fq.isValid());
 
         errorMessage = String.format(FieldValidator.PARTICIPANT_TYPE_TEAM_ERROR_MESSAGE,
-                                     fq.recipientType.toDisplayRecipientName(),
-                                     fq.giverType.toDisplayGiverName()) + System.lineSeparator()
-                       + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE, fq.showGiverNameTo.get(0).toString(),
-                                       FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
-                       + "Trying to show giver name to STUDENTS without showing response first." + System.lineSeparator()
-                       + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE,
-                                       fq.showRecipientNameTo.get(0).toString(),
-                                       FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
-                       + "Trying to show recipient name to STUDENTS without showing response first."
-                       + System.lineSeparator()
-                       + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE, fq.showResponsesTo.get(0).toString(),
-                                       FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
-                       + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE, fq.showResponsesTo.get(1).toString(),
-                                       FieldValidator.VIEWER_TYPE_NAME);
+                fq.recipientType.toDisplayRecipientName(),
+                fq.giverType.toDisplayGiverName()) + System.lineSeparator()
+                + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE, fq.showGiverNameTo.get(0).toString(),
+                FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
+                + "Trying to show giver name to STUDENTS without showing response first." + System.lineSeparator()
+                + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE,
+                fq.showRecipientNameTo.get(0).toString(),
+                FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
+                + "Trying to show recipient name to STUDENTS without showing response first."
+                + System.lineSeparator()
+                + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE, fq.showResponsesTo.get(0).toString(),
+                FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
+                + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE, fq.showResponsesTo.get(1).toString(),
+                FieldValidator.VIEWER_TYPE_NAME);
 
         assertEquals(errorMessage, StringHelper.toString(fq.getInvalidityInfo()));
 
@@ -446,20 +446,20 @@ public class FeedbackQuestionAttributesTest extends BaseAttributesTest {
         assertFalse(fq.isValid());
 
         errorMessage = String.format(FieldValidator.PARTICIPANT_TYPE_TEAM_ERROR_MESSAGE,
-                                     fq.recipientType.toDisplayRecipientName(),
-                                     fq.giverType.toDisplayGiverName()) + System.lineSeparator()
-                       + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE, fq.showGiverNameTo.get(0).toString(),
-                                       FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
-                       + "Trying to show giver name to STUDENTS without showing response first." + System.lineSeparator()
-                       + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE,
-                                       fq.showRecipientNameTo.get(0).toString(),
-                                       FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
-                       + "Trying to show recipient name to STUDENTS without showing response first."
-                       + System.lineSeparator()
-                       + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE, fq.showResponsesTo.get(0).toString(),
-                                       FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
-                       + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE, fq.showResponsesTo.get(1).toString(),
-                                       FieldValidator.VIEWER_TYPE_NAME);
+                fq.recipientType.toDisplayRecipientName(),
+                fq.giverType.toDisplayGiverName()) + System.lineSeparator()
+                + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE, fq.showGiverNameTo.get(0).toString(),
+                FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
+                + "Trying to show giver name to STUDENTS without showing response first." + System.lineSeparator()
+                + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE,
+                fq.showRecipientNameTo.get(0).toString(),
+                FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
+                + "Trying to show recipient name to STUDENTS without showing response first."
+                + System.lineSeparator()
+                + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE, fq.showResponsesTo.get(0).toString(),
+                FieldValidator.VIEWER_TYPE_NAME) + System.lineSeparator()
+                + String.format(FieldValidator.PARTICIPANT_TYPE_ERROR_MESSAGE, fq.showResponsesTo.get(1).toString(),
+                FieldValidator.VIEWER_TYPE_NAME);
 
         assertEquals(errorMessage, StringHelper.toString(fq.getInvalidityInfo()));
 
@@ -893,7 +893,130 @@ public class FeedbackQuestionAttributesTest extends BaseAttributesTest {
         assertNotEquals(fqa1, new Object());
     }
 
+    @Test
+    public void testEqualsDiffCourseIdsShouldFail() {
+        FeedbackQuestionAttributes fqa1 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId1")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        FeedbackQuestionAttributes fqa2 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId2")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        assertFalse(fqa1.equals(fqa2));
+    }
 
+    @Test
+    public void testEqualsOneNullCourseIdShouldFail() {
+        FeedbackQuestionAttributes fqa1 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        FeedbackQuestionAttributes fqa2 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        fqa1.courseId = null;
+        assertFalse(fqa1.equals(fqa2));
+    }
+
+    @Test
+    public void testEqualsDifferentNumberOfEntitiesToGiveFeedbackToShouldFail() {
+        FeedbackQuestionAttributes fqa1 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        FeedbackQuestionAttributes fqa2 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(5)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        assertFalse(fqa1.equals(fqa2));
+    }
+
+    @Test
+    public void testEqualsDifferentQuestionNumberShouldFail() {
+        FeedbackQuestionAttributes fqa1 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        FeedbackQuestionAttributes fqa2 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(2)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        assertFalse(fqa1.equals(fqa2));
+    }
 
     @Test
     public void testEqualsOneNullFeedbackSessionNameShouldFail() {
