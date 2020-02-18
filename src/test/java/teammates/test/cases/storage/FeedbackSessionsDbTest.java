@@ -4,12 +4,16 @@ import static teammates.common.util.FieldValidator.SESSION_END_TIME_FIELD_NAME;
 import static teammates.common.util.FieldValidator.SESSION_START_TIME_FIELD_NAME;
 import static teammates.common.util.FieldValidator.TIME_FRAME_ERROR_MESSAGE;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Set;
 
+import com.googlecode.objectify.SaveException;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -36,6 +40,7 @@ public class FeedbackSessionsDbTest extends BaseComponentTestCase {
 
     private static final FeedbackSessionsDb fsDb = new FeedbackSessionsDb();
     private DataBundle dataBundle = getTypicalDataBundle();
+    private Object RuntimeException;
 
     @BeforeMethod
     public void addSessionsToDb() throws Exception {
@@ -710,5 +715,28 @@ public class FeedbackSessionsDbTest extends BaseComponentTestCase {
                 .withInstructions("Give feedback.")
                 .build();
     }
+
+    @Test
+    public void testUpdateFeedbackSession_defaultCaseError() {
+        //Testing by triggering a SaveException error, one that is not an expected error and therefore the default
+        //catch branch after try.
+        FeedbackSessionAttributes typicalFs = getNewFeedbackSession();
+
+        try {
+            typicalFs = fsDb.putEntity(typicalFs);
+            FeedbackSessionAttributes finalTypicalFs = typicalFs;
+            assertThrows(SaveException.class, () -> {
+                fsDb.updateFeedbackSession(
+                        FeedbackSessionAttributes
+                                .updateOptionsBuilder(finalTypicalFs.getFeedbackSessionName(), finalTypicalFs.getCourseId())
+                                .withIsPublishedEmailEnabled(true)
+                                .withEndTime(Instant.MAX)
+                                .build());            });
+        } catch(Exception e){
+            System.err.println("Failure to test default updateFeedbackSession error");
+        }
+
+    }
+
 
 }
