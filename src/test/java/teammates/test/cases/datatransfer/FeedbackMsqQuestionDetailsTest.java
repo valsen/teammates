@@ -542,23 +542,22 @@ public class FeedbackMsqQuestionDetailsTest extends BaseTestCase {
     }
 
     @Test
-    public void testValidateQuestionDetails_FeedbackParticipantTypeGIVER_shouldReturnError() {
+    public void testValidateQuestionDetails_minSelectableChoicesLessThanOne_shouldReturnError() {
         FeedbackMsqQuestionDetails msqDetails = new FeedbackMsqQuestionDetails();
 
         msqDetails.setMsqChoices(Arrays.asList("a", "b"));
-        // 'other' is one of the choices
         msqDetails.setOtherEnabled(true);
-        msqDetails.setGenerateOptionsFor(FeedbackParticipantType.GIVER);
+        msqDetails.setGenerateOptionsFor(FeedbackParticipantType.NONE);
         msqDetails.setHasAssignedWeights(false);
         msqDetails.setMsqOtherWeight(0);
         msqDetails.setMsqWeights(new ArrayList<>());
         msqDetails.setMaxSelectableChoices(3);
-        msqDetails.setMinSelectableChoices(Integer.MIN_VALUE);
 
-        assertThrows(IllegalStateException.class, () -> {
-            msqDetails.validateQuestionDetails("dummyCourse");
-        });
-    }
+        // setting minSelectableChoices to less than 1 should produce an error
+        msqDetails.setMinSelectableChoices(0);
+
+        List<String> errors = msqDetails.validateQuestionDetails("dummyCourse");
+        AssertHelper.assertContains(Const.FeedbackQuestion.MSQ_ERROR_MIN_FOR_MIN_SELECTABLE_CHOICES, errors.get(0));    }
 
     @Test
     public void testGetQuestionWithExistingResponseSubmissionFormHtml_otherEnabledTest_returnsCorrect() {
