@@ -1175,4 +1175,68 @@ public class FeedbackQuestionAttributesTest extends BaseAttributesTest {
                         .build();
         assertNotEquals(fqa1, fqa2);
     }
+
+    @Test
+    public void testEqualsOneNullQuestionDetailsShouldFail() {
+        FeedbackQuestionAttributes fqa1 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        FeedbackQuestionAttributes fqa2 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        fqa1.questionDetails = null;
+        assertNotEquals(fqa1, fqa2);
+    }
+    @Test
+    public void testEqualsTwoNullQuestionDetailsShouldPass() {
+        FeedbackQuestionAttributes fqa1 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        FeedbackQuestionAttributes fqa2 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        fqa1.questionDetails = null;
+        fqa2.questionDetails = null;
+        assertEquals(fqa1, fqa2);
+    }
 }
