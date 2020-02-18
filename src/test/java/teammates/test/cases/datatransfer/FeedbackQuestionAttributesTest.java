@@ -890,6 +890,6 @@ public class FeedbackQuestionAttributesTest extends BaseAttributesTest {
                         .withShowRecipientNameTo(new ArrayList<>())
                         .withShowResponsesTo(new ArrayList<>())
                         .build();
-        assertEquals(fqa1, new Object());
+        assertNotEquals(fqa1, new Object());
     }
 }
