@@ -9,8 +9,11 @@ import java.util.Map;
 import org.testng.annotations.Test;
 
 import teammates.common.datatransfer.FeedbackParticipantType;
+import teammates.common.datatransfer.attributes.StudentAttributes;
 import teammates.common.datatransfer.questions.FeedbackMsqQuestionDetails;
+import teammates.common.datatransfer.questions.FeedbackMsqResponseDetails;
 import teammates.common.datatransfer.questions.FeedbackQuestionType;
+import teammates.common.datatransfer.questions.FeedbackResponseDetails;
 import teammates.common.util.Const;
 import teammates.test.cases.BaseTestCase;
 import teammates.test.driver.AssertHelper;
@@ -469,4 +472,170 @@ public class FeedbackMsqQuestionDetailsTest extends BaseTestCase {
         List<String> errors = msqDetails.validateQuestionDetails("dummyCourse");
         assertEquals(0, errors.size());
     }
+
+    @Test
+    public void testGetQuestionWithExistingResponseSubmissionFormHtml_otherEnabledTest_returnsCorrect() {
+        FeedbackMsqQuestionDetails msqDetails = new FeedbackMsqQuestionDetails();
+        FeedbackResponseDetails feedbackResponseDetails = new FeedbackMsqResponseDetails();
+        StudentAttributes studentAttributes = StudentAttributes
+                .builder("DD2480", "e@e.com")
+                .build();
+        msqDetails.setOtherEnabled(false);
+
+        //the extra HTML code that should appear if otherEnabled is true
+        String expectedHtmlCode = "<tr>\n" +
+                "  <td>\n" +
+                "    <div class=\"checkbox\">\n" +
+                "      <label class=\"bold-label\">\n" +
+                "        <input type=\"checkbox\"\n" +
+                "            name=\"responsetext-1-1\"\n" +
+                "              value=\"\" data-text=\"msqOtherOptionText\">\n" +
+                "        Other\n" +
+                "      </label>\n" +
+                "      <input class=\"form-control margin-top-2px\" type=\"text\" name=\"msqOtherOptionText-1-1\" id=\"msqOtherOptionText-1-1\"\n" +
+                "          disabled value=\"\">\n" +
+                "      <input type=\"hidden\" name=\"msqIsOtherOptionAnswer-1-1\"\n" +
+                "          id=\"msqIsOtherOptionAnswer-1-1\"\n" +
+                "          value=\"0\">\n" +
+                "    </div>\n" +
+                "  </td>\n" +
+                "</tr>\n";
+
+        //this is the HTML that should appear during the set conditions if otherEnabled is false
+        String fullExpectedOtherFalseHTML = "<p class=\"text-muted\" hidden>\n" +
+                "  You need to choose at least -1 options.\n" +
+                "</p>\n" +
+                "<p class=\"text-muted\" hidden>\n" +
+                "  You cannot choose more than -1 options.\n" +
+                "</p>\n" +
+                "<table>\n" +
+                "  <tr>\n" +
+                "  <td>\n" +
+                "    <div class=\"checkbox\">\n" +
+                "      <label class=\"bold-label\">\n" +
+                "        <input type=\"checkbox\"\n" +
+                "            name=\"responsetext-1-1\"\n" +
+                "            \n" +
+                "            \n" +
+                "            value=\"\">\n" +
+                "        <i>None of the above</i>\n" +
+                "      </label>\n" +
+                "    </div>\n" +
+                "  </td>\n" +
+                "</tr>\n" +
+                "\n" +
+                "</table>\n" +
+                "<input type=\"hidden\" disabled\n" +
+                "    name=\"msqMaxSelectableChoices-1\"\n" +
+                "    value=\"-1\">\n" +
+                "<input type=\"hidden\" disabled\n" +
+                "    name=\"msqMinSelectableChoices-1\"\n" +
+                "    value=\"-1\">";
+
+        String fullReceivedHTML = msqDetails.getQuestionWithExistingResponseSubmissionFormHtml(true,1,1,
+                "DD2480", 1, feedbackResponseDetails, studentAttributes);
+
+        boolean isWindows = (System.getProperty("os.name").toLowerCase().indexOf("win")>=0);
+        if (isWindows){
+            assertEquals(fullReceivedHTML.trim().replaceAll("\\r\\n", "\n"), fullExpectedOtherFalseHTML);
+        }
+        else {
+            assertEquals(fullReceivedHTML, fullExpectedOtherFalseHTML);
+        }
+        msqDetails.setOtherEnabled(true);
+        fullReceivedHTML = msqDetails.getQuestionWithExistingResponseSubmissionFormHtml(true,1,1,
+                "DD2480", 1, feedbackResponseDetails, studentAttributes);
+
+        //if otherEnabled == true then, the expectedHtmlCode should be a new addition to the fullReceivedHTML
+        if (isWindows){
+            assertTrue(fullReceivedHTML.trim().replaceAll("\\r\\n", "\n").contains(expectedHtmlCode));
+        }
+        else {
+            assertTrue(fullReceivedHTML.contains(expectedHtmlCode));
+        }
+
+    }
+
+    @Test
+    public void testGetQuestionWithExistingResponseSubmissionFormHtml__isMinSelectableChoicesEnabledTest_returnsCorrect() {
+        FeedbackMsqQuestionDetails msqDetails = new FeedbackMsqQuestionDetails();
+        FeedbackResponseDetails feedbackResponseDetails = new FeedbackMsqResponseDetails();
+        StudentAttributes studentAttributes = StudentAttributes
+                .builder("DD2480", "e@e.com")
+                .build();
+        //this is the HTML that should appear during the set conditions if otherEnabled is false, as is the default
+        String fullExpectedOtherFalseHTML = "<p class=\"text-muted\" hidden>\n" +
+                "  You need to choose at least -1 options.\n" +
+                "</p>\n" +
+                "<p class=\"text-muted\" hidden>\n" +
+                "  You cannot choose more than -1 options.\n" +
+                "</p>\n" +
+                "<table>\n" +
+                "  <tr>\n" +
+                "  <td>\n" +
+                "    <div class=\"checkbox\">\n" +
+                "      <label class=\"bold-label\">\n" +
+                "        <input type=\"checkbox\"\n" +
+                "            name=\"responsetext-1-1\"\n" +
+                "            \n" +
+                "            \n" +
+                "            value=\"\">\n" +
+                "        <i>None of the above</i>\n" +
+                "      </label>\n" +
+                "    </div>\n" +
+                "  </td>\n" +
+                "</tr>\n" +
+                "\n" +
+                "</table>\n" +
+                "<input type=\"hidden\" disabled\n" +
+                "    name=\"msqMaxSelectableChoices-1\"\n" +
+                "    value=\"-1\">\n" +
+                "<input type=\"hidden\" disabled\n" +
+                "    name=\"msqMinSelectableChoices-1\"\n" +
+                "    value=\"-1\">";
+
+        String retrievedHTML = msqDetails.getQuestionWithExistingResponseSubmissionFormHtml(true,1,1,
+                "DD2480", 1, feedbackResponseDetails, studentAttributes);
+        boolean isWindows = (System.getProperty("os.name").toLowerCase().indexOf("win")>=0);
+        if(isWindows){
+            //asserting that allowing isMinSelectableChoices to be false produces the standard expected HTML
+            assertEquals(retrievedHTML.replaceAll("\\r\\n", "\n"), fullExpectedOtherFalseHTML);
+        } else{
+            assertEquals(retrievedHTML, fullExpectedOtherFalseHTML);
+        }
+
+        msqDetails.setMinSelectableChoices(2);
+        retrievedHTML = msqDetails.getQuestionWithExistingResponseSubmissionFormHtml(true,1,1,
+                "DD2480", 1, feedbackResponseDetails, studentAttributes);
+
+        String expectedChange = "<input type=\"hidden\" disabled\n" +
+                "    name=\"msqMaxSelectableChoices-1\"\n" +
+                "    value=\"-1\">\n" +
+                "<input type=\"hidden\" \n" +
+                "    name=\"msqMinSelectableChoices-1\"\n" +
+                "    value=\"2\">";
+        if(isWindows){
+            //asserting that allowing isMinSelectableChoices to be a value >
+            // Integer.MIN produces expected addition of choices
+            assertTrue(retrievedHTML.replaceAll("\\r\\n", "\n").contains(expectedChange));
+        } else{
+            assertTrue(retrievedHTML.contains(expectedChange));
+        }
+
+        msqDetails.setMinSelectableChoices(10);
+        retrievedHTML = msqDetails.getQuestionWithExistingResponseSubmissionFormHtml(true,1,1,
+                "DD2480", 1, feedbackResponseDetails, studentAttributes);
+
+        expectedChange ="<input type=\"hidden\" \n" +
+                "    name=\"msqMinSelectableChoices-1\"\n" +
+                "    value=\"10\">";
+        if(isWindows){
+            //asserting that changing the value of minSelectableChoices is accurately represented in the returned
+            //HTML
+            assertTrue(retrievedHTML.replaceAll("\\r\\n", "\n").contains(expectedChange));
+        } else{
+            assertTrue(retrievedHTML.contains(expectedChange));
+        }
+    }
+
 }
