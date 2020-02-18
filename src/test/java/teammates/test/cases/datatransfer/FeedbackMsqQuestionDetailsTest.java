@@ -542,6 +542,25 @@ public class FeedbackMsqQuestionDetailsTest extends BaseTestCase {
     }
 
     @Test
+    public void testValidateQuestionDetails_FeedbackParticipantTypeGIVER_shouldReturnError() {
+        FeedbackMsqQuestionDetails msqDetails = new FeedbackMsqQuestionDetails();
+
+        msqDetails.setMsqChoices(Arrays.asList("a", "b"));
+        // 'other' is one of the choices
+        msqDetails.setOtherEnabled(true);
+        msqDetails.setGenerateOptionsFor(FeedbackParticipantType.GIVER);
+        msqDetails.setHasAssignedWeights(false);
+        msqDetails.setMsqOtherWeight(0);
+        msqDetails.setMsqWeights(new ArrayList<>());
+        msqDetails.setMaxSelectableChoices(3);
+        msqDetails.setMinSelectableChoices(Integer.MIN_VALUE);
+
+        assertThrows(IllegalStateException.class, () -> {
+            msqDetails.validateQuestionDetails("dummyCourse");
+        });
+    }
+
+    @Test
     public void testGetQuestionWithExistingResponseSubmissionFormHtml_otherEnabledTest_returnsCorrect() {
         FeedbackMsqQuestionDetails msqDetails = new FeedbackMsqQuestionDetails();
         FeedbackResponseDetails feedbackResponseDetails = new FeedbackMsqResponseDetails();
