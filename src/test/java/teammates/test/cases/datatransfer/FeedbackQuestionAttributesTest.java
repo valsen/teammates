@@ -986,7 +986,7 @@ public class FeedbackQuestionAttributesTest extends BaseAttributesTest {
                         .build();
         assertFalse(fqa1.equals(fqa2));
     }
-
+  
     @Test
     public void testEqualsDifferentQuestionNumberShouldFail() {
         FeedbackQuestionAttributes fqa1 =
@@ -1017,7 +1017,7 @@ public class FeedbackQuestionAttributesTest extends BaseAttributesTest {
                         .build();
         assertFalse(fqa1.equals(fqa2));
     }
-
+  
     @Test
     public void testEqualsOneNullFeedbackSessionNameShouldFail() {
         FeedbackQuestionAttributes fqa1 =
