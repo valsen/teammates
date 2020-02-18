@@ -892,4 +892,67 @@ public class FeedbackQuestionAttributesTest extends BaseAttributesTest {
                         .build();
         assertNotEquals(fqa1, new Object());
     }
+
+    @Test
+    public void testEqualsDiffCourseIdsShouldFail() {
+        FeedbackQuestionAttributes fqa1 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId1")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        FeedbackQuestionAttributes fqa2 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId2")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        assertFalse(fqa1.equals(fqa2));
+    }
+
+    @Test
+    public void testEqualsOneNullCourseIdShouldFail() {
+        FeedbackQuestionAttributes fqa1 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        FeedbackQuestionAttributes fqa2 =
+                FeedbackQuestionAttributes.builder()
+                        .withCourseId("courseId")
+                        .withFeedbackSessionName("session")
+                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
+                        .withRecipientType(FeedbackParticipantType.SELF)
+                        .withNumberOfEntitiesToGiveFeedbackTo(3)
+                        .withQuestionNumber(1)
+                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
+                        .withShowGiverNameTo(new ArrayList<>())
+                        .withShowRecipientNameTo(new ArrayList<>())
+                        .withShowResponsesTo(new ArrayList<>())
+                        .build();
+        fqa1.courseId = null;
+        assertFalse(fqa1.equals(fqa2));
+    }
 }
