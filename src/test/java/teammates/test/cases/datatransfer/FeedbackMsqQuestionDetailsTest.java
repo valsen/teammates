@@ -474,6 +474,74 @@ public class FeedbackMsqQuestionDetailsTest extends BaseTestCase {
     }
 
     @Test
+    public void testValidateQuestionDetails_emptyMsqChoice_shouldAddError() {
+        FeedbackMsqQuestionDetails msqDetails = new FeedbackMsqQuestionDetails();
+        //Setting MsqChoices to be empty
+        msqDetails.setMsqChoices(Arrays.asList(""));
+        List<String> errors = msqDetails.validateQuestionDetails("dummyCourse");
+        StringBuilder fullErrorMessage = new StringBuilder();
+        for (String error : errors) {
+            fullErrorMessage.append(error + " ");
+        }
+        assertTrue(errors.size() >= 1);
+        //Asserting that partial string of what error is reported when msqChoices is set to empty is present
+        assertTrue(fullErrorMessage.toString().contains("Msq options cannot be empty"));
+    }
+
+    @Test
+    public void testValidateQuestionDetails_hasNoAssignedWeightsButOtherWeightsSetGreaterThanZero_shouldAddError() {
+        FeedbackMsqQuestionDetails msqDetails = new FeedbackMsqQuestionDetails();
+
+        msqDetails.setMsqChoices(Arrays.asList("a", "b"));
+        msqDetails.setOtherEnabled(true);
+        msqDetails.setGenerateOptionsFor(FeedbackParticipantType.NONE);
+        //setting assigned weights to true
+        msqDetails.setHasAssignedWeights(false);
+        //Setting MSQ Other Weight to a value different than 1 while weights are not assigned should give an error
+        msqDetails.setMsqOtherWeight(1);
+        msqDetails.setMsqWeights(new ArrayList<>());
+        msqDetails.setMaxSelectableChoices(3);
+        msqDetails.setMinSelectableChoices(Integer.MIN_VALUE);
+
+        List<String> errors = msqDetails.validateQuestionDetails("dummyCourse");
+        assertTrue(errors.size() >= 1);
+        StringBuilder fullErrorMessage = new StringBuilder();
+        for (String error : errors) {
+            fullErrorMessage.append(error + " ");
+        }
+        //Specific invalid weight error string
+        String invalidWeightErrorString = "The weights for the choices of a Multiple-choice (multiple answers) question must be valid numbers with precision up to 2 decimal places.";
+        assertTrue(fullErrorMessage.toString().contains(invalidWeightErrorString));
+    }
+
+    @Test
+    public void testValidateQuestionDetails_hasAssignedWeightsButOtherNotEnabledAndOtherWeightsSetGreaterThanZero_shouldAddError() {
+        FeedbackMsqQuestionDetails msqDetails = new FeedbackMsqQuestionDetails();
+
+        msqDetails.setMsqChoices(Arrays.asList("a", "b"));
+        //setting otherEnabled to false
+        msqDetails.setOtherEnabled(false);
+        msqDetails.setGenerateOptionsFor(FeedbackParticipantType.NONE);
+        //setting assigned weights to true
+        msqDetails.setHasAssignedWeights(true);
+        //setting other weight to some value that is not 0 (therefore causing an error)
+        msqDetails.setMsqOtherWeight(1);
+        msqDetails.setMsqWeights(new ArrayList<>());
+        msqDetails.setMaxSelectableChoices(3);
+        msqDetails.setMinSelectableChoices(Integer.MIN_VALUE);
+
+        List<String> errors = msqDetails.validateQuestionDetails("dummyCourse");
+        assertTrue(errors.size() >= 1);
+        StringBuilder fullErrorMessage = new StringBuilder();
+        for (String error : errors) {
+            fullErrorMessage.append(error + " ");
+        }
+        //Specific invalid weight error string
+        String invalidWeightErrorString = "The weights for the choices of a Multiple-choice (multiple answers) question must be valid numbers with precision up to 2 decimal places.";
+        assertTrue(fullErrorMessage.toString().contains(invalidWeightErrorString));
+    }
+
+    @Test
     public void testGetQuestionWithExistingResponseSubmissionFormHtml_otherEnabledTest_returnsCorrect() {
         FeedbackMsqQuestionDetails msqDetails = new FeedbackMsqQuestionDetails();
         FeedbackResponseDetails feedbackResponseDetails = new FeedbackMsqResponseDetails();
