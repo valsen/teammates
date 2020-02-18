@@ -84,68 +84,6 @@ public class FeedbackQuestionsLogicTest extends BaseLogicTest {
         testAddQuestion();
     }
 
-
-    @Test
-    public void testGetRecipientsForQuestionOwnTeam() throws Exception{
-        FeedbackQuestionAttributes fqa =
-                FeedbackQuestionAttributes.builder()
-                        .withCourseId("courseId")
-                        .withFeedbackSessionName("session")
-                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
-                        .withRecipientType(FeedbackParticipantType.OWN_TEAM)
-                        .withNumberOfEntitiesToGiveFeedbackTo(3)
-                        .withQuestionNumber(1)
-                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
-                        .withShowGiverNameTo(new ArrayList<>())
-                        .withShowRecipientNameTo(new ArrayList<>())
-                        .withShowResponsesTo(new ArrayList<>())
-                        .build();
-
-
-        assertTrue(fqLogic.getRecipientsForQuestion(fqa,"aris").containsValue("aris"));
-    }
-
-    @Test
-    public void testGetRecipientsForQuestionOwnTeamMembersIncludingSelf() throws Exception{
-        FeedbackQuestionAttributes fqa =
-                FeedbackQuestionAttributes.builder()
-                        .withCourseId("courseId")
-                        .withFeedbackSessionName("session")
-                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
-                        .withRecipientType(FeedbackParticipantType.OWN_TEAM_MEMBERS_INCLUDING_SELF)
-                        .withNumberOfEntitiesToGiveFeedbackTo(3)
-                        .withQuestionNumber(1)
-                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
-                        .withShowGiverNameTo(new ArrayList<>())
-                        .withShowRecipientNameTo(new ArrayList<>())
-                        .withShowResponsesTo(new ArrayList<>())
-                        .build();
-
-
-        assertTrue(fqLogic.getRecipientsForQuestion(fqa,"kotsias").containsValue("kotsias"));
-    }
-
-    @Test
-    public void testGetRecipientsForQuestiondDefault() throws Exception{
-        FeedbackQuestionAttributes fqa =
-                FeedbackQuestionAttributes.builder()
-                        .withCourseId("courseId")
-                        .withFeedbackSessionName("session")
-                        .withGiverType(FeedbackParticipantType.INSTRUCTORS)
-                        .withRecipientType(FeedbackParticipantType.RECEIVER)
-                        .withNumberOfEntitiesToGiveFeedbackTo(3)
-                        .withQuestionNumber(1)
-                        .withQuestionDetails(new FeedbackTextQuestionDetails("question text"))
-                        .withShowGiverNameTo(new ArrayList<>())
-                        .withShowRecipientNameTo(new ArrayList<>())
-                        .withShowResponsesTo(new ArrayList<>())
-                        .build();
-
-
-        assertTrue(fqLogic.getRecipientsForQuestion(fqa,"aristotelis").containsValue("aristotelis"));
-    }
-
-
     private void testGetRecipientsForQuestion() throws Exception {
         FeedbackQuestionAttributes question;
         String email;
