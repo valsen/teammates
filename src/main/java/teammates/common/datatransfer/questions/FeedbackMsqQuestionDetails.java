@@ -642,41 +642,47 @@ public class FeedbackMsqQuestionDetails extends FeedbackQuestionDetails {
                + Const.FeedbackQuestionTypeNames.MSQ + "</a></li>";
     }
 
+    private void minNumChoices(List<String> errors) {
+        if (msqChoices.size() < Const.FeedbackQuestion.MSQ_MIN_NUM_OF_CHOICES) {
+            errors.add(Const.FeedbackQuestion.MSQ_ERROR_NOT_ENOUGH_CHOICES
+                    + Const.FeedbackQuestion.MSQ_MIN_NUM_OF_CHOICES + ".");
+        }
+    }
+
+    private void emptyMsqOptionEntered(List<String> errors) {
+        // If there are Empty Msq options entered trigger this error
+        boolean isEmptyMsqOptionEntered = msqChoices.stream().anyMatch(msqText -> msqText.trim().equals(""));
+        if (isEmptyMsqOptionEntered) {
+            errors.add(Const.FeedbackQuestion.MSQ_ERROR_EMPTY_MSQ_OPTION);
+        }
+    }
+
+    private void validWeight(List<String> errors) {
+        // If weights are enabled, number of choices and weights should be same.
+        // If a user enters an invalid weight for a valid choice,
+        // the msqChoices.size() will be greater than msqWeights.size(), in that case
+        // trigger this error.
+        if ((hasAssignedWeights && msqChoices.size() != msqWeights.size()) ||
+                // If weights are not enabled, but weight list is not empty or otherWeight is not 0
+                // In that case, trigger this error.
+                (!hasAssignedWeights && (!msqWeights.isEmpty() || msqOtherWeight != 0)) ||
+                // If weight is enabled, but other option is disabled, and msqOtherWeight is not 0
+                // In that case, trigger this error.
+                (hasAssignedWeights && !otherEnabled && msqOtherWeight != 0)) {
+            errors.add(Const.FeedbackQuestion.MSQ_ERROR_INVALID_WEIGHT);
+        }
+    }
+
     @Override
     public List<String> validateQuestionDetails(String courseId) {
+
         List<String> errors = new ArrayList<>();
         if (generateOptionsFor == FeedbackParticipantType.NONE) {
 
-            if (msqChoices.size() < Const.FeedbackQuestion.MSQ_MIN_NUM_OF_CHOICES) {
-                errors.add(Const.FeedbackQuestion.MSQ_ERROR_NOT_ENOUGH_CHOICES
-                           + Const.FeedbackQuestion.MSQ_MIN_NUM_OF_CHOICES + ".");
-            }
+            minNumChoices(errors);
+            emptyMsqOptionEntered(errors);
+            validWeight(errors);
 
-            // If there are Empty Msq options entered trigger this error
-            boolean isEmptyMsqOptionEntered = msqChoices.stream().anyMatch(msqText -> msqText.trim().equals(""));
-            if (isEmptyMsqOptionEntered) {
-                errors.add(Const.FeedbackQuestion.MSQ_ERROR_EMPTY_MSQ_OPTION);
-            }
-
-            // If weights are enabled, number of choices and weights should be same.
-            // If a user enters an invalid weight for a valid choice,
-            // the msqChoices.size() will be greater than msqWeights.size(), in that case
-            // trigger this error.
-            if (hasAssignedWeights && msqChoices.size() != msqWeights.size()) {
-                errors.add(Const.FeedbackQuestion.MSQ_ERROR_INVALID_WEIGHT);
-            }
-
-            // If weights are not enabled, but weight list is not empty or otherWeight is not 0
-            // In that case, trigger this error.
-            if (!hasAssignedWeights && (!msqWeights.isEmpty() || msqOtherWeight != 0)) {
-                errors.add(Const.FeedbackQuestion.MSQ_ERROR_INVALID_WEIGHT);
-            }
-
-            // If weight is enabled, but other option is disabled, and msqOtherWeight is not 0
-            // In that case, trigger this error.
-            if (hasAssignedWeights && !otherEnabled && msqOtherWeight != 0) {
-                errors.add(Const.FeedbackQuestion.MSQ_ERROR_INVALID_WEIGHT);
-            }
 
             // If weights are negative, trigger this error.
             if (hasAssignedWeights && !msqWeights.isEmpty()) {
@@ -694,7 +700,7 @@ public class FeedbackMsqQuestionDetails extends FeedbackQuestionDetails {
 
             //If there are duplicate mcq options trigger this error
             boolean isDuplicateOptionsEntered = msqChoices.stream().map(String::trim).distinct().count()
-                                                != msqChoices.size();
+                    != msqChoices.size();
             if (isDuplicateOptionsEntered) {
                 errors.add(Const.FeedbackQuestion.MSQ_ERROR_DUPLICATE_MSQ_OPTION);
             }
